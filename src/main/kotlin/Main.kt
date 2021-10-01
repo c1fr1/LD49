@@ -20,21 +20,26 @@ class Main(w : EnigWindow) : EnigView() {
 	val cam = Camera2D(w)
 
 	lateinit var tileVAO : VAO
-	private val NUM_TILES_PER_ROW = 20
 
 	override fun generateResources(window: EnigWindow) {
-		val tileVAOPositions = FloatArray(VBO.squareTC.size * NUM_TILES_PER_ROW) {VBO.squareTC[it % VBO.squareTC.size]}
-		val tileVAOIds = IntArray(NUM_TILES_PER_ROW) {it}
-		val squareIndices = intArrayOf(0, 1, 2, 0, 2, 3)
-		val tileVAOIndices = IntArray(squareIndices.size * NUM_TILES_PER_ROW) {squareIndices[it % squareIndices.size]}
 
-		tileVAO = VAO(arrayOf(VBO(tileVAOPositions, 2), VBO(tileVAOIds, 1)), tileVAOIndices)
+		tileVAO = VAO(0f, 0f, 1f, 1f)
 
-		
 		super.generateResources(window)
 	}
 
 	override fun loop(frameBirth : Long, dtime : Float) : Boolean {
 		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Pressed
+	}
+
+	fun renderTiles() {
+		tileVAO.prepareRender()
+		for (x in -10..10) {
+			for (y in -10..10) {
+				cam.getMatrix().scale(10f).translate(x.toFloat(), y.toFloat(), 0f)
+				tileVAO.drawTriangles()
+			}
+		}
+		tileVAO.unbind()
 	}
 }
