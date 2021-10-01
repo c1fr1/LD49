@@ -30,4 +30,7 @@ not instant death?
 - [ ] render player/hp bar
 - [ ] render enemies on ground
 - [ ] add projectiles/do collision
-- [ ] add features of 
+- [ ] add enemies "rooted" to ground
+- [ ] dash
+- [ ] ???
+- [ ] win jam
