@@ -23,7 +23,14 @@ class Main(w : EnigWindow) : EnigView() {
 	private val NUM_TILES_PER_ROW = 20
 
 	override fun generateResources(window: EnigWindow) {
-		val tileVAOPositions = FloatArray(VBO.squareTC.size * NUM_TILES_PER_ROW)
+		val tileVAOPositions = FloatArray(VBO.squareTC.size * NUM_TILES_PER_ROW) {VBO.squareTC[it % VBO.squareTC.size]}
+		val tileVAOIds = IntArray(NUM_TILES_PER_ROW) {it}
+		val squareIndices = intArrayOf(0, 1, 2, 0, 2, 3)
+		val tileVAOIndices = IntArray(squareIndices.size * NUM_TILES_PER_ROW) {squareIndices[it % squareIndices.size]}
+
+		tileVAO = VAO(arrayOf(VBO(tileVAOPositions, 2), VBO(tileVAOIds, 1)), tileVAOIndices)
+
+		
 		super.generateResources(window)
 	}
 
