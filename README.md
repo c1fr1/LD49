@@ -13,3 +13,10 @@ Not constant; fluctuating
 - building something that you have to maintain
 - reaction based game + decision between maintaining and expanding?
 - tricky towers?
+
+## final? idea:
+tile-based 2d game, rougly linear straight line forward
+procedurally generated enemies
+continuous movement
+turret rooted enemies that shoot bullet-hell projectiles at the player
+dash
