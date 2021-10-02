@@ -8,12 +8,12 @@ import org.joml.Vector2f
 
 abstract class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 
-	open var attackTimer = 1f
+	open var attackTimer = 2f
 
 	fun update(dtime : Float, projectileList : ArrayList<Projectile>, playerPos : Orientation2D) {
 		attackTimer -= dtime
 		if (attackTimer < 0) {
-			attackTimer = 1f
+			attackTimer = 0.5f + Math.random().toFloat()
 			shootProjectiles(projectileList, playerPos)
 		}
 	}

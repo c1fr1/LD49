@@ -40,13 +40,13 @@ class World {
 		renderTiles(camera)
 		Enemy.renderGroup(enemies, camera, squareVAO, texShader)
 
-		/*squareVAO.prepareRender()
+		squareVAO.prepareRender()
 		for (projectile in projectiles) {
 			projectile.type.getTexture().bind()
 			texShader[ShaderType.VERTEX_SHADER, 0] = projectile.transformMat(camera.getMatrix())
 			squareVAO.drawTriangles()
 		}
-		squareVAO.unbind()*/
+		squareVAO.unbind()
 	}
 
 	fun renderTiles(camera : Camera2D) {
@@ -66,7 +66,7 @@ class World {
 
 	fun update(dtime : Float, player : Player) {
 		degradeTiles(dtime, player)
-		//updateProjectiles(dtime, player)
+		updateProjectiles(dtime, player)
 		updateEnemies(dtime, player)
 	}
 
@@ -77,9 +77,12 @@ class World {
 	}
 
 	fun updateProjectiles(dtime : Float, player : Player) {
-		for (i in projectiles.indices) {
+		var i = 0
+		while (i < projectiles.size) {
 			if (projectiles[i].updatePosition(dtime, player)) {
 				projectiles.removeAt(i)
+			} else {
+				++i
 			}
 		}
 	}
