@@ -24,11 +24,12 @@ abstract class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 
 	abstract fun shootProjectiles(projectileList : ArrayList<Projectile>, playerPos : Orientation2D)
 
-	fun playSound(sound : Sound, volume : Float = 1f) {
+	fun playSound(sound : Sound, volume : Float = 1f, player : Vector2f = Vector2f(0f, 0f), pitch : Float = 1f) {
 		sources[sourceIndex].stop()
 		sources[sourceIndex].setVolume(volume)
-		sources[sourceIndex].x = x
-		sources[sourceIndex].y = y
+		sources[sourceIndex].x = 100f
+		sources[sourceIndex].y = y - player.y
+		sources[sourceIndex].setPitch(pitch)
 		sources[sourceIndex].updateSourcePosition()
 		sources[sourceIndex++].playSound(sound)
 		sourceIndex %= sources.size

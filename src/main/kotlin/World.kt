@@ -11,7 +11,7 @@ import org.joml.Vector2i
 import java.util.*
 
 class World {
-	val enemies = arrayListOf<Enemy>(LinearEnemy(0f, 10f))
+	val enemies = arrayListOf<Enemy>()
 	val projectiles = ArrayList<Projectile>()
 	val tiles : LinkedList<Array<Float>> = LinkedList()
 	var ditchedRows = 0

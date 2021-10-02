@@ -11,7 +11,7 @@ class LinearEnemy(x : Float, y : Float) : Enemy(x, y) {
 		val del = playerPos - this
 		rotation = atan2(del.y, del.x)
 		projectileList.add(LinearProjectile(this))
-		playSound(attackSounds.random(), 0.2f)
+		playSound(attackSounds.random(), 0.1f, playerPos)
 	}
 }
 
