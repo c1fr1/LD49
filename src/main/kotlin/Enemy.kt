@@ -1,5 +1,7 @@
 import engine.entities.Camera2D
 import engine.entities.Orientation2D
+import engine.openal.Sound
+import engine.openal.SoundSource
 import engine.opengl.Texture
 import engine.opengl.bufferObjects.VAO
 import engine.opengl.shaders.ShaderProgram
@@ -24,6 +26,8 @@ abstract class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 
 	companion object {
 		lateinit var hydrantTex : Texture
+		lateinit var sources : Array<SoundSource>
+		lateinit var attackSounds : Array<Sound>
 
 		fun renderGroup(enemies : ArrayList<Enemy>, cam : Camera2D, square : VAO, shader : ShaderProgram) {
 			shader.enable()
@@ -38,6 +42,8 @@ abstract class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 
 		fun generateResources() {
 			hydrantTex = Texture("fire extinguisher.png")
+			sources = Array(20) { SoundSource(0f, 0f, 0f) }
+			attackSounds = Array(4) {Sound("sounds/ext$it.wav")}
 		}
 	}
 }
