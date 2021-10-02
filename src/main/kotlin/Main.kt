@@ -6,7 +6,6 @@ import engine.opengl.jomlExtensions.Vector3f
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
 import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
-import org.joml.Vector3f
 
 fun main() {
 	EnigContext.init()
@@ -21,7 +20,7 @@ class Main(w : EnigWindow) : EnigView() {
 
 	val input = w.inputHandler
 
-	val cam = Camera2D(w)
+	val player = Player(w)
 
 	var world = World()
 
@@ -38,6 +37,7 @@ class Main(w : EnigWindow) : EnigView() {
 
 	override fun loop(frameBirth : Long, dtime : Float) : Boolean {
 		FBO.prepareDefaultRender()
+		player.updatePlayerPosition(dtime, input)
 		renderTiles()
 		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Pressed
 	}
@@ -49,7 +49,7 @@ class Main(w : EnigWindow) : EnigView() {
 		for (row in world.tiles) {
 			for (x in row.indices) {
 				tileShader[ShaderType.FRAGMENT_SHADER, 0] = row[x]
-				tileShader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix().scale(5f).translate((x - world.rowWidth / 2).toFloat(), y.toFloat(), 0f)
+				tileShader[ShaderType.VERTEX_SHADER, 0] = player.getMatrix().scale(5f).translate((x - world.rowWidth / 2).toFloat(), y.toFloat(), 0f)
 				tileVAO.drawTriangles()
 			}
 			++y
