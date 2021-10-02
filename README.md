@@ -26,7 +26,7 @@ not instant death?
 
 - [x] render/store tiles in a queue
 - [x] move player
-- [ ] start destroying tiles when standing on them
+- [x] start destroying tiles when standing on them
 - [ ] render player/hp bar
 - [ ] render enemies on ground
 - [ ] add projectiles/do collision

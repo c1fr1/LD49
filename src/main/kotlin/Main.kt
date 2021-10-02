@@ -1,16 +1,12 @@
 import engine.EnigView
-import engine.entities.Camera2D
 import engine.opengl.*
 import engine.opengl.bufferObjects.*
-import engine.opengl.jomlExtensions.Vector3f
-import engine.opengl.jomlExtensions.unaryMinus
-import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
 import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
 
 fun main() {
 	EnigContext.init()
-	val window = EnigWindow("enignets demo", GLContextPreset.standard2D)
+	val window = EnigWindow("LD49", GLContextPreset.standard2D)
 	val view = Main(window)
 	view.runInGLSafe(window)
 

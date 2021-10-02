@@ -13,17 +13,18 @@ import kotlin.math.roundToInt
 class World {
 	val tiles : LinkedList<Array<Float>> = LinkedList()
 	var ditchedRows = 0
-	private val rowsShownBelowCam  = 10
+	private val rowsShownBelowCam = 10
+	private val requiredRowsAboveCam = 15
 
 	val rowWidth : Int
 
 	lateinit var tileShader : ShaderProgram
 	lateinit var tileVAO : VAO
 
-	constructor(numRequiredRows : Int = 21, rowWidth : Int = 20) {
+	constructor(rowWidth : Int = 20) {
 		this.rowWidth = rowWidth
-		for (i in 0 until numRequiredRows) {
-			tiles.add(Array(rowWidth) {(Math.random().toFloat() + 4f) / 5f})
+		for (i in 0 until rowsShownBelowCam + requiredRowsAboveCam) {
+			addRow()
 		}
 	}
 
@@ -60,9 +61,11 @@ class World {
 			set(posul, get(posul) - degradingFactor)
 		}
 		if (poslr != posur) {
-			set(posul, get(posul) - degradingFactor)
+			set(poslr, get(poslr) - degradingFactor)
 		}
-		set(posul, get(posul) - degradingFactor)
+		set(posur, get(posur) - degradingFactor)
+
+		while (tiles.size - requiredRowsAboveCam < posul.y) addRow()
 	}
 
 	fun getTilePosForWorldPos(pos : Vector2fc) : Vector2i {
@@ -80,5 +83,8 @@ class World {
 	operator fun set(x : Int, y : Int, value : Float) {tiles[y][x] = value}
 	operator fun set(pos : Vector2i, value : Float) = set(pos.x, pos.y, value)
 
+	private fun addRow() {
+		tiles.add(Array(rowWidth) {(Math.random().toFloat() + 4f) / 5f})
+	}
 
 }
