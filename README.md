@@ -24,7 +24,7 @@ not instant death?
 
 ## TODO
 
-- [ ] render/store tiles in a queue
+- [x] render/store tiles in a queue
 - [ ] move player
 - [ ] start destroying tiles when standing on them
 - [ ] render player/hp bar
