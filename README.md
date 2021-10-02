@@ -37,9 +37,9 @@ not instant death?
 - [x] render enemies on ground
 - [x] add projectiles/do collision
 - [x] enemy spawning
-- [ ] add fraction of player vel to particle velocities
-- [ ] more burning/blending
+- [x] add fraction of player vel to particle velocities
 - [ ] sounds
+- [ ] more burning/blending
 - [ ] add enemies "rooted" to ground
 - [ ] dash
 - [ ] ???
