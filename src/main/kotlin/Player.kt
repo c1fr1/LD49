@@ -1,6 +1,8 @@
 import engine.PIf
 import engine.entities.Camera2D
 import engine.entities.Orientation2D
+import engine.openal.Sound
+import engine.openal.SoundSource
 import engine.opengl.EnigWindow
 import engine.opengl.InputHandler
 import engine.opengl.bufferObjects.SSBO1f
@@ -45,6 +47,10 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	private lateinit var velSSBO : SSBO2f
 	private lateinit var sizeSSBO : SSBO1f
 	private lateinit var colorSSBO : SSBO3f
+
+	private lateinit var sources : Array<SoundSource>
+	private lateinit var hitSound : Sound
+	var sourceIndex = 0
 
 	fun updatePlayerPosition(dtime : Float, input : InputHandler, world : World, aspectRatio : Float, time : Float) {
 		val delta = Vector2f()
@@ -123,6 +129,11 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		vao.unbind()
 	}
 
+	fun landHit() {
+		sources[sourceIndex++].playSound(hitSound)
+		sourceIndex %= sources.size
+	}
+
 	fun generateResources() {
 		compShader = ComputeProgram("particles.glsl")
 		shader = ShaderProgram("particleShader")
@@ -137,6 +148,9 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		colorSSBO = SSBO3f(Array(NUM_PARTICLES) {
 			emberSlide(random().toFloat())
 		}.toFloatArray())
+
+		sources = Array(5) { SoundSource(0f, 0f, 0f) }
+		hitSound = Sound("sounds/sizzle0.wav")
 	}
 }
 

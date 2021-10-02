@@ -22,6 +22,7 @@ class LinearProjectile(enemy : LinearEnemy, val speed : Float = 40f) : Projectil
 		y += sin(rotation) * distance
 		if (distance(player) < 2f) {
 			player.hp -= 0.5f
+			player.landHit()
 			return true
 		}
 		return distance(player) > 200f
