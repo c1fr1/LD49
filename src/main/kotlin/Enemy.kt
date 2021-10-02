@@ -24,10 +24,23 @@ abstract class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 
 	abstract fun shootProjectiles(projectileList : ArrayList<Projectile>, playerPos : Orientation2D)
 
+	fun playSound(sound : Sound, volume : Float = 1f) {
+		sources[sourceIndex].stop()
+		sources[sourceIndex].setVolume(volume)
+		sources[sourceIndex].x = x
+		sources[sourceIndex].y = y
+		sources[sourceIndex].updateSourcePosition()
+		sources[sourceIndex++].playSound(sound)
+		sourceIndex %= sources.size
+	}
+
 	companion object {
 		lateinit var hydrantTex : Texture
 		lateinit var sources : Array<SoundSource>
 		lateinit var attackSounds : Array<Sound>
+		lateinit var damagedSounds : Array<Sound>
+
+		var sourceIndex = 0
 
 		fun renderGroup(enemies : ArrayList<Enemy>, cam : Camera2D, square : VAO, shader : ShaderProgram) {
 			shader.enable()
@@ -44,6 +57,7 @@ abstract class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 			hydrantTex = Texture("fire extinguisher.png")
 			sources = Array(20) { SoundSource(0f, 0f, 0f) }
 			attackSounds = Array(4) {Sound("sounds/ext$it.wav")}
+			damagedSounds = Array(3) {Sound("sounds/hit$it.wav")}
 		}
 	}
 }
