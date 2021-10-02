@@ -1,7 +1,6 @@
 import engine.EnigView
 import engine.opengl.*
 import engine.opengl.bufferObjects.*
-import engine.opengl.shaders.Shader
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
 import org.joml.Matrix4f

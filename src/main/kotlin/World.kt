@@ -11,6 +11,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 class World {
+	val enemies = arrayListOf(Enemy())
 	val tiles : LinkedList<Array<Float>> = LinkedList()
 	var ditchedRows = 0
 	private val rowsShownBelowCam = 10
@@ -31,6 +32,7 @@ class World {
 	fun generateResources() {
 		tileVAO = VAO(0f, 0f, 1f, 1f)
 		tileShader = ShaderProgram("tileShader")
+		Enemy.generateResources()
 	}
 
 	fun renderTiles(camera : Camera2D) {
