@@ -2,7 +2,11 @@ import engine.EnigView
 import engine.entities.Camera2D
 import engine.opengl.*
 import engine.opengl.bufferObjects.*
+import engine.opengl.jomlExtensions.Vector3f
+import engine.opengl.shaders.ShaderProgram
+import engine.opengl.shaders.ShaderType
 import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
+import org.joml.Vector3f
 
 fun main() {
 	EnigContext.init()
@@ -19,24 +23,30 @@ class Main(w : EnigWindow) : EnigView() {
 
 	val cam = Camera2D(w)
 
+	lateinit var tileShader : ShaderProgram
 	lateinit var tileVAO : VAO
 
 	override fun generateResources(window: EnigWindow) {
 
 		tileVAO = VAO(0f, 0f, 1f, 1f)
+		tileShader = ShaderProgram("tileShader")
 
 		super.generateResources(window)
 	}
 
 	override fun loop(frameBirth : Long, dtime : Float) : Boolean {
+		FBO.prepareDefaultRender()
+		renderTiles()
 		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Pressed
 	}
 
 	fun renderTiles() {
+		tileShader.enable()
+		tileShader[ShaderType.FRAGMENT_SHADER, 0] = Vector3f(1f, 1f, 1f)
 		tileVAO.prepareRender()
 		for (x in -10..10) {
 			for (y in -10..10) {
-				cam.getMatrix().scale(10f).translate(x.toFloat(), y.toFloat(), 0f)
+				tileShader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix().scale(5f).translate(x.toFloat(), y.toFloat(), 0f)
 				tileVAO.drawTriangles()
 			}
 		}
