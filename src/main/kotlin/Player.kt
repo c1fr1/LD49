@@ -52,6 +52,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	private lateinit var hitSound : Sound
 	private lateinit var fireSound : Sound
 	private lateinit var fireSource : SoundSource
+	private lateinit var attackSounds : Array<Sound>
 	var sourceIndex = 0
 
 	fun updatePlayerPosition(dtime : Float, input : InputHandler, world : World, aspectRatio : Float, time : Float) {
@@ -82,10 +83,11 @@ class Player(w : EnigWindow) : Camera2D(w) {
 			hp = min(hp + recoverySpeed, 1f)
 		}
 
+		fireSource.setVolume(hp / 2f)
+
 		shotCD -= dtime
 		if (input.mouseButtons[GLFW_MOUSE_BUTTON_LEFT].isDown && shotCD < 0) {
-			projectiles.add(PlayerProjectile(this, input, aspectRatio))
-			shotCD = 0.25f
+			attack(input, aspectRatio)
 		}
 
 		var i = 0
@@ -96,6 +98,12 @@ class Player(w : EnigWindow) : Camera2D(w) {
 				++i
 			}
 		}
+	}
+
+	fun attack(input : InputHandler, aspectRatio : Float) {
+		projectiles.add(PlayerProjectile(this, input, aspectRatio))
+		shotCD = 0.25f
+		playSound(attackSounds.random(), 10f)
 	}
 
 	fun generateParticles(dtime : Float, time : Float, speed : Vector2f) {
@@ -132,7 +140,12 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	}
 
 	fun landHit() {
-		sources[sourceIndex++].playSound(hitSound)
+		playSound(hitSound, 1f)
+	}
+
+	fun playSound(sound : Sound, volume : Float) {
+		sources[sourceIndex].stop()
+		sources[sourceIndex].setVolume(1f)
 		sourceIndex %= sources.size
 	}
 
@@ -151,10 +164,12 @@ class Player(w : EnigWindow) : Camera2D(w) {
 			emberSlide(random().toFloat())
 		}.toFloatArray())
 
-		sources = Array(5) { SoundSource(0f, 0f, 0f) }
+		sources = Array(10) { SoundSource(0f, 0f, 0f) }
 		fireSource = SoundSource(0f, 0f, 0f)
 		hitSound = Sound("sounds/sizzle0.wav")
+		attackSounds = Array(3) {Sound("sounds/attack$it.wav")}
 		fireSound = Sound("sounds/fire.wav")
+		fireSource.setVolume(0.5f)
 		fireSource.setLoop()
 		fireSource.playSound(fireSound)
 	}
