@@ -2,9 +2,9 @@ in vec2 tc;
 
 out vec4 color;
 
-uniform vec3 ocolor;
+uniform float strength;
 
 void main() {
-	color = vec4(ocolor, 1);
+	color = vec4(1, 1, 1, strength);
 	color.xy -= tc / 10;
 }

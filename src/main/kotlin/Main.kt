@@ -23,6 +23,8 @@ class Main(w : EnigWindow) : EnigView() {
 
 	val cam = Camera2D(w)
 
+	var world = World()
+
 	lateinit var tileShader : ShaderProgram
 	lateinit var tileVAO : VAO
 
@@ -42,13 +44,15 @@ class Main(w : EnigWindow) : EnigView() {
 
 	fun renderTiles() {
 		tileShader.enable()
-		tileShader[ShaderType.FRAGMENT_SHADER, 0] = Vector3f(1f, 1f, 1f)
 		tileVAO.prepareRender()
-		for (x in -10..10) {
-			for (y in -10..10) {
-				tileShader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix().scale(5f).translate(x.toFloat(), y.toFloat(), 0f)
+		var y = -9 + world.ditchedRows
+		for (row in world.tiles) {
+			for (x in row.indices) {
+				tileShader[ShaderType.FRAGMENT_SHADER, 0] = row[x]
+				tileShader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix().scale(5f).translate((x - world.rowWidth / 2).toFloat(), y.toFloat(), 0f)
 				tileVAO.drawTriangles()
 			}
+			++y
 		}
 		tileVAO.unbind()
 	}
