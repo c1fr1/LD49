@@ -53,13 +53,14 @@ class Main(w : EnigWindow) : EnigView() {
 	}
 
 	fun renderPlayer() {
-		world.tileShader[ShaderType.VERTEX_SHADER, 0] = player.getMatrix().translate(player.x, player.y, 0f).scale(2f)
+		/*world.tileShader[ShaderType.VERTEX_SHADER, 0] = player.getMatrix().translate(player.x, player.y, 0f).scale(2f)
 		squareVAO.prepareRender()
 		squareVAO.drawTriangles()
 		hpShader.enable()
 		hpShader[ShaderType.VERTEX_SHADER, 0] = Matrix4f().translate(0f, -1f, 0f).scale(1f, 0.02f, 1f)
 		hpShader[ShaderType.FRAGMENT_SHADER, 0] = player.hp
 		squareVAO.drawTriangles()
-		squareVAO.unbind()
+		squareVAO.unbind()*/
+
 	}
 }

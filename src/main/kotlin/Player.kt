@@ -8,7 +8,8 @@ import engine.opengl.bufferObjects.VAO
 import engine.opengl.checkGLError
 import engine.opengl.jomlExtensions.toFloatArray
 import engine.opengl.shaders.ComputeProgram
-import example.rand
+import engine.opengl.shaders.ShaderProgram
+import engine.opengl.shaders.ShaderType
 import org.joml.Math.random
 import org.joml.Vector2f
 import org.joml.Vector3f
@@ -29,7 +30,8 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	private var left = GLFW_KEY_A
 	private var right = GLFW_KEY_D
 
-	private lateinit var shader : ComputeProgram
+	private lateinit var compShader : ComputeProgram
+	private lateinit var shader : ShaderProgram
 	private lateinit var posSSBO : SSBO2f
 	private lateinit var velSSBO : SSBO2f
 	private lateinit var sizeSSBO : SSBO1f
@@ -57,20 +59,32 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 	fun generateParticles(dtime : Float, time : Float) {
 		checkGLError()
-		shader.enable()
-		shader[0] = this as Vector2f
-		shader[1] = dtime
-		shader[2] = time
+		compShader.enable()
+		compShader[0] = this as Vector2f
+		compShader[1] = dtime
+		compShader[2] = time
 		posSSBO.bindToPosition(0)
 		velSSBO.bindToPosition(1)
 		sizeSSBO.bindToPosition(2)
 		checkGLError()
-		shader.run(NUM_PARTICLES)
+		compShader.run(NUM_PARTICLES)
 		checkGLError()
 	}
 
+	fun render(vao : VAO) {
+		shader.enable()
+		posSSBO.bindToPosition(0)
+		sizeSSBO.bindToPosition(2)
+		colorSSBO.bindToPosition(3)
+		shader[ShaderType.VERTEX_SHADER, 0] = getMatrix()
+		vao.prepareRender()
+		vao.drawTrianglesInstanced(NUM_PARTICLES)
+		vao.unbind()
+	}
+
 	fun generateResources() {
-		shader = ComputeProgram("particles.glsl")
+		compShader = ComputeProgram("particles.glsl")
+		shader = ShaderProgram("particleShader")
 		posSSBO = SSBO2f(FloatArray(2 * NUM_PARTICLES))
 		velSSBO = SSBO2f(FloatArray(2 * NUM_PARTICLES))
 		sizeSSBO = SSBO1f(FloatArray(NUM_PARTICLES) {random().toFloat()})
