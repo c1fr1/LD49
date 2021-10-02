@@ -67,7 +67,14 @@ class Player(w : EnigWindow) : Camera2D(w) {
 			hp = min(hp + recoverySpeed, 1f)
 		}
 
-		while (updatePlayerPosition())
+		var i = 0
+		while (i < projectiles.size) {
+			if (projectiles[i].updatePosition(dtime, this)) {
+				projectiles.removeAt(i)
+			} else {
+				++i
+			}
+		}
 	}
 
 	fun generateParticles(dtime : Float, time : Float) {
@@ -93,7 +100,12 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		vao.prepareRender()
 		vao.drawTrianglesInstanced(NUM_PARTICLES)
 
-		for (proj in pla)
+		texShader.enable()
+		for (proj in projectiles) {
+			proj.type.getTexture()
+			texShader[ShaderType.VERTEX_SHADER, 0] = proj.transformMat(getMatrix())
+
+		}
 	}
 
 	fun generateResources() {
@@ -120,12 +132,8 @@ class PlayerProjectile(player : Player, val speed : Float = 30f, input : InputHa
 		val distance = dtime * speed
 		x += cos(rotation) * distance
 		y += sin(rotation) * distance
-		if (distance(player) < 2f) {
-			player.hp -= 0.5f
-			return true
-		}
 		return distance(player) > 200f
 	}
 
-	override fun transformMat(cam : Matrix4f) : Matrix4f = cam.translate(x, y, 0f).rotateZ(rotation + PIf / 2)
+	override fun transformMat(cam : Matrix4f) : Matrix4f = cam.translate(x, y, 0f).rotateZ(rotation - PIf / 2)
 }
