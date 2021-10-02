@@ -5,6 +5,7 @@ import engine.opengl.bufferObjects.SSBO1f
 import engine.opengl.bufferObjects.SSBO2f
 import engine.opengl.bufferObjects.SSBO3f
 import engine.opengl.bufferObjects.VAO
+import engine.opengl.checkGLError
 import engine.opengl.jomlExtensions.toFloatArray
 import engine.opengl.shaders.ComputeProgram
 import example.rand
@@ -55,13 +56,17 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	}
 
 	fun generateParticles(dtime : Float, time : Float) {
-		shader[0] = this
+		checkGLError()
+		shader.enable()
+		shader[0] = this as Vector2f
 		shader[1] = dtime
 		shader[2] = time
 		posSSBO.bindToPosition(0)
 		velSSBO.bindToPosition(1)
 		sizeSSBO.bindToPosition(2)
+		checkGLError()
 		shader.run(NUM_PARTICLES)
+		checkGLError()
 	}
 
 	fun generateResources() {
