@@ -47,13 +47,13 @@ class Main(w : EnigWindow) : EnigView() {
 		world.update(dtime, player)
 
 		world.render(player, squareVAO, texShader)
-		renderPlayer()
+		player.render(squareVAO, texShader)
+		renderHPBar()
 
 		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Pressed
 	}
 
-	fun renderPlayer() {
-		player.render(squareVAO)
+	fun renderHPBar() {
 		hpShader.enable()
 		squareVAO.prepareRender()
 		hpShader[ShaderType.VERTEX_SHADER, 0] = Matrix4f().translate(0f, -1f, 0f).scale(1f, 0.02f, 1f)

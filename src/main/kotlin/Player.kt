@@ -1,4 +1,6 @@
+import engine.PIf
 import engine.entities.Camera2D
+import engine.entities.Orientation2D
 import engine.opengl.EnigWindow
 import engine.opengl.InputHandler
 import engine.opengl.bufferObjects.SSBO1f
@@ -12,10 +14,14 @@ import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
 import org.joml.Math.clamp
 import org.joml.Math.random
+import org.joml.Matrix4f
 import org.joml.Vector2f
 import org.joml.Vector3f
 import org.lwjgl.glfw.GLFW.*
+import kotlin.math.atan2
+import kotlin.math.cos
 import kotlin.math.min
+import kotlin.math.sin
 
 
 private const val NUM_PARTICLES = 100
@@ -60,6 +66,8 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		} else {
 			hp = min(hp + recoverySpeed, 1f)
 		}
+
+		while (updatePlayerPosition())
 	}
 
 	fun generateParticles(dtime : Float, time : Float) {
@@ -76,7 +84,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		checkGLError()
 	}
 
-	fun render(vao : VAO) {
+	fun render(vao : VAO, texShader : ShaderProgram) {
 		shader.enable()
 		posSSBO.bindToPosition(0)
 		sizeSSBO.bindToPosition(2)
@@ -84,7 +92,8 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		shader[ShaderType.VERTEX_SHADER, 0] = getMatrix()
 		vao.prepareRender()
 		vao.drawTrianglesInstanced(NUM_PARTICLES)
-		vao.unbind()
+
+		for (proj in pla)
 	}
 
 	fun generateResources() {
@@ -94,8 +103,6 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		velSSBO = SSBO2f(FloatArray(2 * NUM_PARTICLES))
 		sizeSSBO = SSBO1f(FloatArray(NUM_PARTICLES) {random().toFloat()})
 
-
-
 		fun emberSlide(factor : Float) : Vector3f {
 			return Vector3f(clamp(3f - factor * 3f, 0f, 1f), 1f - factor, 0f)
 		}
@@ -104,4 +111,21 @@ class Player(w : EnigWindow) : Camera2D(w) {
 			emberSlide(random().toFloat())
 		}.toFloatArray())
 	}
+}
+
+class PlayerProjectile(player : Player, val speed : Float = 30f, input : InputHandler) :
+	Projectile, Orientation2D(atan2(input.cursorY, input.cursorX).toFloat(), player) {
+	override val type : ProjectileType = ProjectileType.player
+	override fun updatePosition(dtime : Float, player : Player) : Boolean {
+		val distance = dtime * speed
+		x += cos(rotation) * distance
+		y += sin(rotation) * distance
+		if (distance(player) < 2f) {
+			player.hp -= 0.5f
+			return true
+		}
+		return distance(player) > 200f
+	}
+
+	override fun transformMat(cam : Matrix4f) : Matrix4f = cam.translate(x, y, 0f).rotateZ(rotation + PIf / 2)
 }

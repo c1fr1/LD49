@@ -14,7 +14,7 @@ class LinearEnemy(x : Float, y : Float) : Enemy(x, y) {
 	}
 }
 
-class LinearProjectile(enemy : LinearEnemy, val speed : Float = 25f) : Projectile, Orientation2D(enemy.rotation, enemy) {
+class LinearProjectile(enemy : LinearEnemy, val speed : Float = 40f) : Projectile, Orientation2D(enemy.rotation, enemy) {
 	override val type : ProjectileType = ProjectileType.water
 	override fun updatePosition(dtime : Float, player : Player) : Boolean {
 		val distance = dtime * speed

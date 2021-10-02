@@ -10,10 +10,11 @@ interface Projectile : Vector2fc {
 }
 
 enum class ProjectileType {
-	water;
+	player, water;
 
 	fun getTexture() : Texture {
 		return when (this) {
+			player -> playerProjTex
 			water -> waterTex
 		}
 	}
