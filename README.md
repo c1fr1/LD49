@@ -32,5 +32,6 @@ not instant death?
 - [x] add projectiles/do collision
 - [ ] add enemies "rooted" to ground
 - [ ] dash
+- [ ] more burning/blending
 - [ ] ???
 - [ ] win jam

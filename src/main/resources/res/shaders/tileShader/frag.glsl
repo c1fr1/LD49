@@ -21,5 +21,7 @@ void main() {
 	if (noise > strength) {
 		color.w = 0;
 	}
-	color.xyz = mix(color.xyz, emberSlide((strength - noise) * 10), clamp((strength - noise) * 5, 0, 1));
+	vec3 emberColor = emberSlide((strength - noise) * 10);
+	float emberFactor = 1 - clamp(7 * (strength - noise), 0, 1);
+	color.xyz = mix(color.xyz, emberColor, emberFactor);
 }

@@ -8,6 +8,7 @@ import kotlin.math.min
 class Player(w : EnigWindow) : Camera2D(w) {
 
 	var hp = 1f
+	var projectiles = ArrayList<Projectile>()
 
 	// CONTROLS
 	private var forward = GLFW_KEY_W
