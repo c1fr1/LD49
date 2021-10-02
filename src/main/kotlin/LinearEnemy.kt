@@ -14,14 +14,17 @@ class LinearEnemy(x : Float, y : Float) : Enemy(x, y) {
 	}
 }
 
-class LinearProjectile(enemy : LinearEnemy) : Projectile, Orientation2D(enemy.rotation, enemy) {
+class LinearProjectile(enemy : LinearEnemy, val speed : Float = 25f) : Projectile, Orientation2D(enemy.rotation, enemy) {
 	override val type : ProjectileType = ProjectileType.water
 	override fun updatePosition(dtime : Float, player : Player) : Boolean {
-		val distance = dtime * 10f
+		val distance = dtime * speed
 		x += cos(rotation) * distance
 		y += sin(rotation) * distance
-		if (player.distance( < ))
-		return player.distance(this) < 2f
+		if (distance(player) < 2f) {
+			player.hp -= 0.5f
+			return true
+		}
+		return distance(player) > 200f
 	}
 
 	override fun transformMat(cam : Matrix4f) : Matrix4f = cam.translate(x, y, 0f).rotateZ(rotation + PIf / 2)

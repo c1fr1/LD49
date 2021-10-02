@@ -30,7 +30,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		x += delta.x
 		y += delta.y
 
-		val recoverySpeed = 5f
+		val recoverySpeed = 0.25f
 
 		hp = min(hp + dtime * recoverySpeed, 1f)
 	}
