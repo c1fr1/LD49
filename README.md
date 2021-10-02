@@ -22,6 +22,12 @@ turret rooted enemies that shoot bullet-hell projectiles at the player
 dash
 not instant death? 
 
+## Rendering the player
+
+- particle positions and sizes determined by a SSBO that gets modified by a compute shader
+- render normal -1..1 VAO instanced
+- fragment shader does magic
+
 ## TODO
 
 - [x] render/store tiles in a queue
