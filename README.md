@@ -28,8 +28,8 @@ not instant death?
 - [x] move player
 - [x] start destroying tiles when standing on them
 - [x] render player/hp bar
-- [ ] render enemies on ground
-- [ ] add projectiles/do collision
+- [x] render enemies on ground
+- [x] add projectiles/do collision
 - [ ] add enemies "rooted" to ground
 - [ ] dash
 - [ ] ???
