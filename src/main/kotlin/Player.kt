@@ -38,7 +38,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	private lateinit var sizeSSBO : SSBO1f
 	private lateinit var colorSSBO : SSBO3f
 
-	fun updatePlayerPosition(dtime : Float, input : InputHandler) {
+	fun updatePlayerPosition(dtime : Float, input : InputHandler, world : World) {
 		val delta = Vector2f()
 		if (input.keys[forward].isDown) delta.y += 1f
 		if (input.keys[backward].isDown) delta.y -= 1f
@@ -53,9 +53,13 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		x += delta.x
 		y += delta.y
 
-		val recoverySpeed = 0.25f
+		val recoverySpeed = dtime * 0.25f
 
-		hp = min(hp + dtime * recoverySpeed, 1f)
+		if (world[this] < 0f) {
+			hp -= recoverySpeed * 2f
+		} else {
+			hp = min(hp + recoverySpeed, 1f)
+		}
 	}
 
 	fun generateParticles(dtime : Float, time : Float) {

@@ -43,7 +43,7 @@ class Main(w : EnigWindow) : EnigView() {
 
 		player.generateParticles(dtime, world.time)
 
-		player.updatePlayerPosition(dtime, input)
+		player.updatePlayerPosition(dtime, input, world)
 		world.update(dtime, player)
 
 		world.render(player, squareVAO, texShader)

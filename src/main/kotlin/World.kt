@@ -96,31 +96,15 @@ class World {
 	}
 
 	fun degradeTiles(dtime : Float, player : Vector2fc) {
-		/*val posll = getTilePosForWorldPos(player + Vector2f(-2f, -2f))
-		val posul = getTilePosForWorldPos(player + Vector2f(-2f, 2f))
-		val poslr = getTilePosForWorldPos(player + Vector2f(2f, -2f))
-		val posur = getTilePosForWorldPos(player + Vector2f(2f, 2f))
-		if (boundsCheck(posll) && posll != posul && posll != poslr && posll != posur) {
-			set(posll, get(posll) - degradingFactor)
-		}
-		if (boundsCheck(posul) && posul != poslr && posul != posur) {
-			set(posul, get(posul) - degradingFactor)
-		}
-		if (boundsCheck(poslr) && poslr != posur) {
-			set(poslr, get(poslr) - degradingFactor)
-		}
-		if (boundsCheck(posur)) {
-			set(posur, get(posur) - degradingFactor)
-		}*/
 		val degradingFactor = dtime / 2f
 
 		val playerPos = getTilePosForWorldPos(player)
-		var y = ditchedRows - rowsShownBelowCam
+		var y = 0
 		for (row in tiles) {
 			for (x in row.indices) {
 				if (playerPos.x == x && playerPos.y == y) {
 					row[x] -= degradingFactor
-				} else if (row[x] < 0.75) {
+				} else if (row[x] < 0.85) {
 					row[x] -= degradingFactor / 2f;
 				}
 			}
@@ -144,6 +128,8 @@ class World {
 	operator fun get(pos : Vector2i) = get(pos.x, pos.y)
 	operator fun set(x : Int, y : Int, value : Float) {tiles[y][x] = value}
 	operator fun set(pos : Vector2i, value : Float) = set(pos.x, pos.y, value)
+	operator fun get(pos : Vector2f) = get(getTilePosForWorldPos(pos))
+	operator fun set(pos : Vector2f, value : Float) = set(getTilePosForWorldPos(pos), value)
 
 	private fun addRow() {
 		tiles.add(Array(rowWidth) {(Math.random().toFloat() + 4f) / 5f})
