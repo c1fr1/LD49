@@ -15,7 +15,7 @@ abstract class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 	fun update(dtime : Float, projectileList : ArrayList<Projectile>, playerPos : Orientation2D) {
 		attackTimer -= dtime
 		if (attackTimer < 0) {
-			attackTimer = 0.5f + Math.random().toFloat() / 4f
+			attackTimer = 1.75f + Math.random().toFloat() / 4f
 			shootProjectiles(projectileList, playerPos)
 		}
 	}

@@ -151,7 +151,7 @@ class PlayerProjectile(player : Player, input : InputHandler, aspectRatio : Floa
 	fun checkEnemyCollision(world : World) : Boolean {
 		for (i in world.enemies.indices) {
 			if (distance(world.enemies[i]) < 3f) {
-				world.enemies[i].hp -= 0.1f
+				world.enemies[i].hp -= 0.2f
 				if (world.enemies[i].hp < 0) {
 					world.enemies.removeAt(i)
 				}

@@ -109,13 +109,13 @@ class World {
 				} else if (row[x] < 0.85 || (playerPos.distance(x, y) > 10f && y < playerPos.y)) {
 					row[x] -= degradingFactor / 2f
 				} else if (y - playerPos.y < 2) {
-					row[x] -= degradingFactor / 20f
+					row[x] -= degradingFactor / 40f
 				}
 			}
 			++y
 		}
 
-		while (tiles.size - requiredRowsAboveCam < playerPos.y) addRow()
+		while (tiles.size - requiredRowsAboveCam < playerPos.y) addRow(true)
 	}
 
 	fun getTilePosForWorldPos(pos : Vector2fc) : Vector2i {
@@ -139,10 +139,10 @@ class World {
 
 	fun getWorldPositionY(y : Int) = 5f * (y.toFloat() + 0.5f + ditchedRows - rowsShownBelowCam)
 
-	private fun addRow() {
+	private fun addRow(spawnEnemies : Boolean = false) {
 		tiles.add(Array(rowWidth) {(Math.random().toFloat() + 4f) / 5f})
-		while (random() < 0.5f) {
-			enemies.add()
+		while (random() < 0.05f && spawnEnemies) {
+			enemies.add(LinearEnemy(getWorldPositionX((random() * rowWidth).toInt()), getWorldPositionY(ditchedRows + tiles.size)))
 		}
 	}
 
