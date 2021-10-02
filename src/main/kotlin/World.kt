@@ -8,7 +8,6 @@ import org.joml.Vector2f
 import org.joml.Vector2fc
 import org.joml.Vector2i
 import java.util.*
-import kotlin.math.roundToInt
 
 class World {
 	val enemies = arrayListOf<Enemy>(LinearEnemy(0f, 10f))
@@ -41,13 +40,13 @@ class World {
 		renderTiles(camera)
 		Enemy.renderGroup(enemies, camera, squareVAO, texShader)
 
-		squareVAO.prepareRender()
+		/*squareVAO.prepareRender()
 		for (projectile in projectiles) {
 			projectile.type.getTexture().bind()
 			texShader[ShaderType.VERTEX_SHADER, 0] = projectile.transformMat(camera.getMatrix())
 			squareVAO.drawTriangles()
 		}
-		squareVAO.unbind()
+		squareVAO.unbind()*/
 	}
 
 	fun renderTiles(camera : Camera2D) {
@@ -67,13 +66,13 @@ class World {
 
 	fun update(dtime : Float, player : Player) {
 		degradeTiles(dtime, player)
-		updateProjectiles(dtime, player)
+		//updateProjectiles(dtime, player)
 		updateEnemies(dtime, player)
 	}
 
 	fun updateEnemies(dtime : Float, player : Player) {
 		for (enemy in enemies) {
-			enemy.udpate(dtime, projectiles, player)
+			enemy.update(dtime, projectiles, player)
 		}
 	}
 

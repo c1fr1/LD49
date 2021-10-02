@@ -10,7 +10,7 @@ abstract class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 
 	open var attackTimer = 1f
 
-	fun udpate(dtime : Float, projectileList : ArrayList<Projectile>, playerPos : Orientation2D) {
+	fun update(dtime : Float, projectileList : ArrayList<Projectile>, playerPos : Orientation2D) {
 		attackTimer -= dtime
 		if (attackTimer < 0) {
 			attackTimer = 1f
