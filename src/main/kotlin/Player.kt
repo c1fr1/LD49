@@ -19,8 +19,6 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 		val speed = dtime * 25
 
-
-
 		if (delta.lengthSquared() > 0.5f) {
 			delta.normalize(speed)
 		}
