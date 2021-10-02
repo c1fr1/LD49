@@ -1,8 +1,10 @@
 import engine.entities.Camera2D
 import engine.opengl.bufferObjects.VAO
+import engine.opengl.jomlExtensions.plus
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
 import org.joml.Math.floor
+import org.joml.Vector2f
 import org.joml.Vector2fc
 import org.joml.Vector2i
 import java.util.*
@@ -45,8 +47,22 @@ class World {
 		tileVAO.unbind()
 	}
 
-	fun degradeTiles(player : Vector2fc) {
-
+	fun degradeTiles(dtime : Float, player : Vector2fc) {
+		val posll = getTilePosForWorldPos(player + Vector2f(-2f, -2f))
+		val posul = getTilePosForWorldPos(player + Vector2f(-2f, 2f))
+		val poslr = getTilePosForWorldPos(player + Vector2f(2f, -2f))
+		val posur = getTilePosForWorldPos(player + Vector2f(2f, 2f))
+		val degradingFactor = dtime / 2f
+		if (posll != posul && posll != poslr && posll != posur) {
+			set(posll, get(posll) - degradingFactor)
+		}
+		if (posul != poslr && posul != posur) {
+			set(posul, get(posul) - degradingFactor)
+		}
+		if (poslr != posur) {
+			set(posul, get(posul) - degradingFactor)
+		}
+		set(posul, get(posul) - degradingFactor)
 	}
 
 	fun getTilePosForWorldPos(pos : Vector2fc) : Vector2i {
@@ -61,4 +77,8 @@ class World {
 
 	operator fun get(x : Int, y : Int) = tiles[y][x]
 	operator fun get(pos : Vector2i) = get(pos.x, pos.y)
+	operator fun set(x : Int, y : Int, value : Float) {tiles[y][x] = value}
+	operator fun set(pos : Vector2i, value : Float) = set(pos.x, pos.y, value)
+
+
 }
