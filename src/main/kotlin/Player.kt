@@ -18,6 +18,7 @@ import org.joml.Matrix4f
 import org.joml.Vector2f
 import org.joml.Vector3f
 import org.lwjgl.glfw.GLFW.*
+import org.lwjgl.system.windows.MOUSEINPUT
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.min
@@ -29,6 +30,7 @@ private const val NUM_PARTICLES = 100
 class Player(w : EnigWindow) : Camera2D(w) {
 
 	var hp = 1f
+	var shotCD = 0f
 	var projectiles = ArrayList<Projectile>()
 
 	// CONTROLS
@@ -44,7 +46,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	private lateinit var sizeSSBO : SSBO1f
 	private lateinit var colorSSBO : SSBO3f
 
-	fun updatePlayerPosition(dtime : Float, input : InputHandler, world : World) {
+	fun updatePlayerPosition(dtime : Float, input : InputHandler, world : World, aspectRatio : Float) {
 		val delta = Vector2f()
 		if (input.keys[forward].isDown) delta.y += 1f
 		if (input.keys[backward].isDown) delta.y -= 1f
@@ -65,6 +67,12 @@ class Player(w : EnigWindow) : Camera2D(w) {
 			hp -= recoverySpeed * 2f
 		} else {
 			hp = min(hp + recoverySpeed, 1f)
+		}
+
+		shotCD -= dtime
+		if (input.mouseButtons[GLFW_MOUSE_BUTTON_LEFT].isDown && shotCD < 0) {
+			projectiles.add(PlayerProjectile(this, input, aspectRatio))
+			shotCD = 0.25f
 		}
 
 		var i = 0
@@ -102,10 +110,11 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 		texShader.enable()
 		for (proj in projectiles) {
-			proj.type.getTexture()
+			proj.type.getTexture().bind()
 			texShader[ShaderType.VERTEX_SHADER, 0] = proj.transformMat(getMatrix())
-
+			vao.drawTriangles()
 		}
+		vao.unbind()
 	}
 
 	fun generateResources() {
@@ -125,8 +134,8 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	}
 }
 
-class PlayerProjectile(player : Player, val speed : Float = 30f, input : InputHandler) :
-	Projectile, Orientation2D(atan2(input.cursorY, input.cursorX).toFloat(), player) {
+class PlayerProjectile(player : Player, input : InputHandler, aspectRatio : Float, val speed : Float = 30f) :
+	Projectile, Orientation2D(atan2(-input.glCursorY, input.glCursorX * aspectRatio), player) {
 	override val type : ProjectileType = ProjectileType.player
 	override fun updatePosition(dtime : Float, player : Player) : Boolean {
 		val distance = dtime * speed

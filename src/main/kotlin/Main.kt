@@ -19,6 +19,8 @@ class Main(w : EnigWindow) : EnigView() {
 
 	val input = w.inputHandler
 
+	val aspect = w.aspectRatio
+
 	val player = Player(w)
 
 	var world = World()
@@ -43,7 +45,7 @@ class Main(w : EnigWindow) : EnigView() {
 
 		player.generateParticles(dtime, world.time)
 
-		player.updatePlayerPosition(dtime, input, world)
+		player.updatePlayerPosition(dtime, input, world, aspect)
 		world.update(dtime, player)
 
 		world.render(player, squareVAO, texShader)
