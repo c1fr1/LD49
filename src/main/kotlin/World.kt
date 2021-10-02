@@ -113,10 +113,10 @@ class World {
 			++y
 		}
 
-		/*while (tiles.first.all { it < 0f }) {
+		while (tiles.first.all { it < 0f }) {
 			tiles.pop()
 			++ditchedRows
-		}*/
+		}
 
 		while (tiles.size - requiredRowsAboveCam < playerPos.y) addRow(true)
 		println(tiles.size)

@@ -36,7 +36,7 @@ not instant death?
 - [x] render player/hp bar
 - [x] render enemies on ground
 - [x] add projectiles/do collision
-- [ ] enemy spawning
+- [x] enemy spawning
 - [ ] add fraction of player vel to particle velocities
 - [ ] more burning/blending
 - [ ] sounds

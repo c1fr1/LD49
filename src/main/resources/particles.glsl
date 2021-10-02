@@ -6,6 +6,7 @@ layout (std430) buffer;
 uniform vec2 playerPos;
 uniform float dtime;
 uniform float time;
+uniform vec2 playerVel;
 
 layout (binding = 0) buffer Pos { vec2 pos[]; };
 layout (binding = 1) buffer Vel { vec2 vel[]; };
@@ -17,7 +18,7 @@ void main() {
 	float noiseY = gnoise(vec4(5 * time, pID * 100, 0, 100));
 	if (size[pID] < 0) {
 		pos[pID] = playerPos;
-		vel[pID] = vec2(noiseX, noiseY) * 10;
+		vel[pID] = vec2(noiseX, noiseY) * 10 + playerVel / (3 * dtime);
 		size[pID] = mod(mod(time, 1) * (473 + pID), 1);
 	}
 	vel[pID] += 30 * vec2(noiseX, noiseY) * dtime;
