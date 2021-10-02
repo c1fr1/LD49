@@ -34,11 +34,20 @@ class World {
 		tileVAO = VAO(0f, 0f, 1f, 1f)
 		tileShader = ShaderProgram("tileShader")
 		Enemy.generateResources()
+		ProjectileType.generateResources()
 	}
 
 	fun render(camera : Camera2D, squareVAO : VAO, texShader : ShaderProgram) {
 		renderTiles(camera)
 		Enemy.renderGroup(enemies, camera, squareVAO, texShader)
+
+		squareVAO.prepareRender()
+		for (projectile in projectiles) {
+			projectile.type.getTexture().bind()
+			texShader[ShaderType.VERTEX_SHADER, 0] = projectile.transformMat(camera.getMatrix())
+			squareVAO.drawTriangles()
+		}
+		squareVAO.unbind()
 	}
 
 	fun renderTiles(camera : Camera2D) {
@@ -54,6 +63,26 @@ class World {
 			++y
 		}
 		tileVAO.unbind()
+	}
+
+	fun update(dtime : Float, player : Player) {
+		degradeTiles(dtime, player)
+		updateProjectiles(dtime, player)
+		updateEnemies(dtime, player)
+	}
+
+	fun updateEnemies(dtime : Float, player : Player) {
+		for (enemy in enemies) {
+			enemy.udpate(dtime, projectiles, player)
+		}
+	}
+
+	fun updateProjectiles(dtime : Float, player : Player) {
+		for (i in projectiles.indices) {
+			if (projectiles[i].updatePosition(dtime, player)) {
+				projectiles.removeAt(i)
+			}
+		}
 	}
 
 	fun degradeTiles(dtime : Float, player : Vector2fc) {

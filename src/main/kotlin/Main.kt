@@ -41,7 +41,7 @@ class Main(w : EnigWindow) : EnigView() {
 		FBO.prepareDefaultRender()
 
 		player.updatePlayerPosition(dtime, input)
-		world.degradeTiles(dtime, player)
+		world.update(dtime, player)
 
 		world.render(player, squareVAO, texShader)
 		renderPlayer() //TODO add more interesting player
