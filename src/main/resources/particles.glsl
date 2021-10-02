@@ -17,10 +17,10 @@ void main() {
 	float noiseY = gnoise(vec4(time, pID * 100, 0, 100));
 	if (size[pID] < 0) {
 		pos[pID] = playerPos;
-		vel[pID] = vec2(noiseX, noiseY);
-		size[pID] = fract(1000000 * time);
+		vel[pID] = vec2(noiseX, noiseY) * 100;
+		size[pID] = mod(1000 * time, 1);
 	}
-	vel[pID] += vec2(noiseX, noiseY) * dtime;
+	vel[pID] += 10 * vec2(noiseX, noiseY) * dtime;
 	pos[pID] += vel[pID] * dtime;
 	size[pID] -= dtime;
 }
