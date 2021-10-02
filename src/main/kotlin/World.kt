@@ -11,7 +11,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 class World {
-	val enemies = arrayListOf(Enemy())
+	val enemies = arrayListOf(Enemy(0f, 10f))
 	val tiles : LinkedList<Array<Float>> = LinkedList()
 	var ditchedRows = 0
 	private val rowsShownBelowCam = 10
@@ -35,6 +35,11 @@ class World {
 		Enemy.generateResources()
 	}
 
+	fun render(camera : Camera2D, squareVAO : VAO, texShader : ShaderProgram) {
+		renderTiles(camera)
+		Enemy.renderGroup(enemies, camera, squareVAO, texShader)
+	}
+
 	fun renderTiles(camera : Camera2D) {
 		tileShader.enable()
 		tileVAO.prepareRender()
@@ -56,16 +61,18 @@ class World {
 		val poslr = getTilePosForWorldPos(player + Vector2f(2f, -2f))
 		val posur = getTilePosForWorldPos(player + Vector2f(2f, 2f))
 		val degradingFactor = dtime / 2f
-		if (posll != posul && posll != poslr && posll != posur) {
+		if (boundsCheck(posll) && posll != posul && posll != poslr && posll != posur) {
 			set(posll, get(posll) - degradingFactor)
 		}
-		if (posul != poslr && posul != posur) {
+		if (boundsCheck(posul) && posul != poslr && posul != posur) {
 			set(posul, get(posul) - degradingFactor)
 		}
-		if (poslr != posur) {
+		if (boundsCheck(poslr) && poslr != posur) {
 			set(poslr, get(poslr) - degradingFactor)
 		}
-		set(posur, get(posur) - degradingFactor)
+		if (boundsCheck(posur)) {
+			set(posur, get(posur) - degradingFactor)
+		}
 
 		while (tiles.size - requiredRowsAboveCam < posul.y) addRow()
 	}

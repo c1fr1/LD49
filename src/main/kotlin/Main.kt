@@ -25,12 +25,14 @@ class Main(w : EnigWindow) : EnigView() {
 
 	lateinit var squareVAO : VAO
 	lateinit var hpShader : ShaderProgram
+	lateinit var texShader : ShaderProgram
 
 	override fun generateResources(window: EnigWindow) {
 		super.generateResources(window)
 
 		squareVAO = VAO(-1f, -1f, 2f, 2f)
 		hpShader = ShaderProgram("hpShader")
+		texShader = ShaderProgram("textureShader")
 
 		world.generateResources()
 	}
@@ -41,7 +43,7 @@ class Main(w : EnigWindow) : EnigView() {
 		player.updatePlayerPosition(dtime, input)
 		world.degradeTiles(dtime, player)
 
-		world.renderTiles(player)
+		world.render(player, squareVAO, texShader)
 		renderPlayer() //TODO add more interesting player
 
 		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Pressed

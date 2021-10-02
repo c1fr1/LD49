@@ -4,8 +4,9 @@ import engine.opengl.Texture
 import engine.opengl.bufferObjects.VAO
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
+import org.joml.Vector2f
 
-class Enemy : Orientation2D() {
+class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 	companion object {
 		lateinit var hydrantTex : Texture
 
@@ -14,7 +15,7 @@ class Enemy : Orientation2D() {
 			square.prepareRender()
 			hydrantTex.bind()
 			for (enemy in enemies) {
-				shader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix().translate(enemy.x, enemy.y, 0f)
+				shader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix().translate(enemy.x, enemy.y, 0f).scale(2f)
 				square.drawTriangles()
 			}
 			square.unbind()
