@@ -31,7 +31,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 	var hp = 1f
 	var shotCD = 0f
-	var projectiles = ArrayList<Projectile>()
+	var projectiles = ArrayList<PlayerProjectile>()
 
 	// CONTROLS
 	private var forward = GLFW_KEY_W
@@ -53,7 +53,11 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		if (input.keys[left].isDown) delta.x -= 1f
 		if (input.keys[right].isDown) delta.x += 1f
 
-		val speed = dtime * 25
+		var speed = dtime * 20
+
+		if (shotCD > 0) {
+			speed /= 2
+		}
 
 		if (delta.lengthSquared() > 0.5f) {
 			delta.normalize(speed)
@@ -77,7 +81,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 		var i = 0
 		while (i < projectiles.size) {
-			if (projectiles[i].updatePosition(dtime, this)) {
+			if (projectiles[i].updatePosition(dtime, this) || projectiles[i].checkEnemyCollision(world)) {
 				projectiles.removeAt(i)
 			} else {
 				++i
@@ -142,6 +146,19 @@ class PlayerProjectile(player : Player, input : InputHandler, aspectRatio : Floa
 		x += cos(rotation) * distance
 		y += sin(rotation) * distance
 		return distance(player) > 200f
+	}
+
+	fun checkEnemyCollision(world : World) : Boolean {
+		for (i in world.enemies.indices) {
+			if (distance(world.enemies[i]) < 3f) {
+				world.enemies[i].hp -= 0.1f
+				if (world.enemies[i].hp < 0) {
+					world.enemies.removeAt(i)
+				}
+				return true
+			}
+		}
+		return false
 	}
 
 	override fun transformMat(cam : Matrix4f) : Matrix4f = cam.translate(x, y, 0f).rotateZ(rotation - PIf / 2)

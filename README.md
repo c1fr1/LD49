@@ -36,8 +36,10 @@ not instant death?
 - [x] render player/hp bar
 - [x] render enemies on ground
 - [x] add projectiles/do collision
+- [ ] enemy spawning
+- [ ] more burning/blending
+- [ ] sounds
 - [ ] add enemies "rooted" to ground
 - [ ] dash
-- [ ] more burning/blending
 - [ ] ???
 - [ ] win jam
