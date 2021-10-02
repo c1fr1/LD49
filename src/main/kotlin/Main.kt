@@ -37,10 +37,12 @@ class Main(w : EnigWindow) : EnigView() {
 
 	override fun loop(frameBirth : Long, dtime : Float) : Boolean {
 		FBO.prepareDefaultRender()
+
 		player.updatePlayerPosition(dtime, input)
+
 		world.renderTiles(player)
-		renderPlayer()
-		//TODO add more interesting player
+		renderPlayer() //TODO add more interesting player
+
 		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Pressed
 	}
 

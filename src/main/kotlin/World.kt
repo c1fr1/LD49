@@ -2,13 +2,16 @@ import engine.entities.Camera2D
 import engine.opengl.bufferObjects.VAO
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
+import org.joml.Math.floor
 import org.joml.Vector2fc
 import org.joml.Vector2i
 import java.util.*
+import kotlin.math.roundToInt
 
 class World {
-	val tiles : Queue<Array<Float>> = LinkedList()
-	var ditchedRows: Int = 0
+	val tiles : LinkedList<Array<Float>> = LinkedList()
+	var ditchedRows = 0
+	private val rowsShownBelowCam  = 10
 
 	val rowWidth : Int
 
@@ -30,7 +33,7 @@ class World {
 	fun renderTiles(camera : Camera2D) {
 		tileShader.enable()
 		tileVAO.prepareRender()
-		var y = -9 + ditchedRows
+		var y = ditchedRows - rowsShownBelowCam
 		for (row in tiles) {
 			for (x in row.indices) {
 				tileShader[ShaderType.FRAGMENT_SHADER, 0] = row[x]
@@ -42,9 +45,20 @@ class World {
 		tileVAO.unbind()
 	}
 
+	fun degradeTiles(player : Vector2fc) {
+
+	}
+
 	fun getTilePosForWorldPos(pos : Vector2fc) : Vector2i {
-		val x = (pos.x() / 5f + (rowWidth / 2)).toInt()
-		val y = (pos.y() / 5f).toInt()
+		val x = floor(pos.x() / 5f + (rowWidth / 2)).toInt()
+		val y = floor(pos.y() / 5f).toInt() + rowsShownBelowCam - ditchedRows
 		return Vector2i(x, y)
 	}
+
+	fun boundsCheck(pos : Vector2i) : Boolean {
+		return pos.x > 0 && pos.y > 0 && pos.x < rowWidth && pos.y < tiles.size
+	}
+
+	operator fun get(x : Int, y : Int) = tiles[y][x]
+	operator fun get(pos : Vector2i) = get(pos.x, pos.y)
 }
