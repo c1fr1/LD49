@@ -53,7 +53,15 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		hp = min(hp + dtime * recoverySpeed, 1f)
 	}
 
+	fun generateParticles(dtime : Float, time : Float) {
+		shader[0] = this
+		shader[1] = dtime
+		shader[2] = time
+		shader.run(NUM_PARTICLES)
+	}
+
 	fun generateResources() {
+		shader = ComputeProgram("particles.glsl")
 		posSSBO = SSBO2f(FloatArray(2 * NUM_PARTICLES))
 		sizeSSBO = SSBO1f(FloatArray(NUM_PARTICLES) {random().toFloat()})
 		colorSSBO = SSBO3f(Array(NUM_PARTICLES) {

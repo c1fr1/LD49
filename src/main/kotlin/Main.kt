@@ -35,6 +35,7 @@ class Main(w : EnigWindow) : EnigView() {
 		texShader = ShaderProgram("textureShader")
 
 		world.generateResources()
+		player.generateResources()
 	}
 
 	override fun loop(frameBirth : Long, dtime : Float) : Boolean {
