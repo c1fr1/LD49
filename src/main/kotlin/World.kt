@@ -1,10 +1,8 @@
 import engine.entities.Camera2D
 import engine.opengl.Texture
 import engine.opengl.bufferObjects.VAO
-import engine.opengl.jomlExtensions.plus
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
-import example.rand
 import org.joml.Math.floor
 import org.joml.Math.random
 import org.joml.Vector2f
@@ -100,7 +98,7 @@ class World {
 	fun degradeTiles(dtime : Float, player : Vector2fc) {
 		val degradingFactor = dtime / 2f
 
-		val playerPos = getTilePosForWorldPos(player)
+		val playerPos = getTilePos(player)
 		var y = 0
 		for (row in tiles) {
 			for (x in row.indices) {
@@ -118,22 +116,25 @@ class World {
 		while (tiles.size - requiredRowsAboveCam < playerPos.y) addRow(true)
 	}
 
-	fun getTilePosForWorldPos(pos : Vector2fc) : Vector2i {
-		val x = floor(pos.x() / 5f + (rowWidth / 2)).toInt()
-		val y = floor(pos.y() / 5f).toInt() + rowsShownBelowCam - ditchedRows
-		return Vector2i(x, y)
-	}
+	fun getTileX(x : Float) = floor(x / 5f + (rowWidth / 2)).toInt()
+	fun getTileY(y : Float) = (y / 5f).toInt() + rowsShownBelowCam - ditchedRows
 
-	fun boundsCheck(pos : Vector2i) : Boolean {
-		return pos.x >= 0 && pos.y >= 0 && pos.x < rowWidth && pos.y < tiles.size
-	}
+	fun getTilePos(pos : Vector2fc) =Vector2i(getTileX(pos.x()), getTileY(pos.y()))
+
+	fun boundsCheck(pos : Vector2f) = boundsCheck(getTilePos(pos))
+
+	fun boundsCheck(pos : Vector2i) = boundsCheckX(pos.x) && boundsCheckY(pos.y)
+
+	fun boundsCheckX(x : Int) = x in 0 until rowWidth
+
+	fun boundsCheckY(y : Int) = y in tiles.indices
 
 	operator fun get(x : Int, y : Int) = tiles[y][x]
 	operator fun get(pos : Vector2i) = get(pos.x, pos.y)
 	operator fun set(x : Int, y : Int, value : Float) {tiles[y][x] = value}
 	operator fun set(pos : Vector2i, value : Float) = set(pos.x, pos.y, value)
-	operator fun get(pos : Vector2f) = get(getTilePosForWorldPos(pos))
-	operator fun set(pos : Vector2f, value : Float) = set(getTilePosForWorldPos(pos), value)
+	operator fun get(pos : Vector2f) = get(getTilePos(pos))
+	operator fun set(pos : Vector2f, value : Float) = set(getTilePos(pos), value)
 
 	fun getWorldPositionX(x : Int) = 5f * (x.toFloat() + 0.5f - (rowWidth / 2))
 
@@ -141,7 +142,7 @@ class World {
 
 	private fun addRow(spawnEnemies : Boolean = false) {
 		tiles.add(Array(rowWidth) {(Math.random().toFloat() + 4f) / 5f})
-		while (random() < 0.05f && spawnEnemies) {
+		while (random() < 0.1f && spawnEnemies) {
 			enemies.add(LinearEnemy(getWorldPositionX((random() * rowWidth).toInt()), getWorldPositionY(ditchedRows + tiles.size)))
 		}
 	}

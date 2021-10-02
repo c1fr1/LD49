@@ -67,7 +67,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 		val recoverySpeed = dtime * 0.25f
 
-		if (world[this] < 0f) {
+		if (!world.boundsCheck(this) || world[this] < 0f) {
 			hp -= recoverySpeed * 2f
 		} else {
 			hp = min(hp + recoverySpeed, 1f)
