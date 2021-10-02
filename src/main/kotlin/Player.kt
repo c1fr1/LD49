@@ -50,6 +50,8 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 	private lateinit var sources : Array<SoundSource>
 	private lateinit var hitSound : Sound
+	private lateinit var fireSound : Sound
+	private lateinit var fireSource : SoundSource
 	var sourceIndex = 0
 
 	fun updatePlayerPosition(dtime : Float, input : InputHandler, world : World, aspectRatio : Float, time : Float) {
@@ -150,7 +152,11 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		}.toFloatArray())
 
 		sources = Array(5) { SoundSource(0f, 0f, 0f) }
+		fireSource = SoundSource(0f, 0f, 0f)
 		hitSound = Sound("sounds/sizzle0.wav")
+		fireSound = Sound("sounds/fire.wav")
+		fireSource.setLoop()
+		fireSource.playSound(fireSound)
 	}
 }
 
