@@ -114,6 +114,8 @@ class World {
 			set(posur, get(posur) - degradingFactor)
 		}
 
+		var y = ditchedRows - rowsShownBelowCam
+
 		while (tiles.size - requiredRowsAboveCam < posul.y) addRow()
 	}
 
@@ -124,7 +126,7 @@ class World {
 	}
 
 	fun boundsCheck(pos : Vector2i) : Boolean {
-		return pos.x > 0 && pos.y > 0 && pos.x < rowWidth && pos.y < tiles.size
+		return pos.x >= 0 && pos.y >= 0 && pos.x < rowWidth && pos.y < tiles.size
 	}
 
 	operator fun get(x : Int, y : Int) = tiles[y][x]

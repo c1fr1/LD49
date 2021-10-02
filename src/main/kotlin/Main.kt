@@ -47,7 +47,7 @@ class Main(w : EnigWindow) : EnigView() {
 		world.update(dtime, player)
 
 		world.render(player, squareVAO, texShader)
-		renderPlayer() //TODO add more interesting player
+		renderPlayer()
 
 		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Pressed
 	}

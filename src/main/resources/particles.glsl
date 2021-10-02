@@ -13,14 +13,14 @@ layout (binding = 2) buffer Size { float size[]; };
 
 void main() {
 	uint pID = gl_GlobalInvocationID.x;
-	float noiseX = gnoise(vec4(time, pID * 100, 0, 0));
-	float noiseY = gnoise(vec4(time, pID * 100, 0, 100));
+	float noiseX = gnoise(vec4(5 * time, pID * 100, 0, 0));
+	float noiseY = gnoise(vec4(5 * time, pID * 100, 0, 100));
 	if (size[pID] < 0) {
 		pos[pID] = playerPos;
-		vel[pID] = vec2(noiseX, noiseY) * 100;
-		size[pID] = mod(1000 * time, 1);
+		vel[pID] = vec2(noiseX, noiseY) * 10;
+		size[pID] = mod(mod(time, 1) * (473 + pID), 1);
 	}
-	vel[pID] += 10 * vec2(noiseX, noiseY) * dtime;
+	vel[pID] += 30 * vec2(noiseX, noiseY) * dtime;
 	pos[pID] += vel[pID] * dtime;
 	size[pID] -= dtime;
 }

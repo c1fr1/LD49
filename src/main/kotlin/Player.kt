@@ -10,6 +10,7 @@ import engine.opengl.jomlExtensions.toFloatArray
 import engine.opengl.shaders.ComputeProgram
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
+import org.joml.Math.clamp
 import org.joml.Math.random
 import org.joml.Vector2f
 import org.joml.Vector3f
@@ -88,8 +89,15 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		posSSBO = SSBO2f(FloatArray(2 * NUM_PARTICLES))
 		velSSBO = SSBO2f(FloatArray(2 * NUM_PARTICLES))
 		sizeSSBO = SSBO1f(FloatArray(NUM_PARTICLES) {random().toFloat()})
+
+
+
+		fun emberSlide(factor : Float) : Vector3f {
+			return Vector3f(clamp(3f - factor * 3f, 0f, 1f), 1f - factor, 0f)
+		}
+
 		colorSSBO = SSBO3f(Array(NUM_PARTICLES) {
-			Vector3f(0.5f + random().toFloat() / 2f, 0f + random().toFloat(), random().toFloat() / 10f)
+			emberSlide(random().toFloat())
 		}.toFloatArray())
 	}
 }
