@@ -17,6 +17,7 @@ class World {
 	var ditchedRows = 0
 	private val rowsShownBelowCam = 10
 	private val requiredRowsAboveCam = 15
+	var time = 0f
 
 	val rowWidth : Int
 
@@ -70,6 +71,7 @@ class World {
 	}
 
 	fun update(dtime : Float, player : Player) {
+		time += dtime
 		degradeTiles(dtime, player)
 		updateProjectiles(dtime, player)
 		updateEnemies(dtime, player)

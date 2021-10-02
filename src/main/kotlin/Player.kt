@@ -1,8 +1,16 @@
 import engine.entities.Camera2D
 import engine.opengl.EnigWindow
 import engine.opengl.InputHandler
+import engine.opengl.bufferObjects.SSBO1f
+import engine.opengl.bufferObjects.SSBO2f
+import engine.opengl.bufferObjects.SSBO3f
 import engine.opengl.bufferObjects.VAO
+import engine.opengl.jomlExtensions.toFloatArray
+import engine.opengl.shaders.ComputeProgram
+import example.rand
+import org.joml.Math.random
 import org.joml.Vector2f
+import org.joml.Vector3f
 import org.lwjgl.glfw.GLFW.*
 import kotlin.math.min
 
@@ -20,8 +28,10 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	private var left = GLFW_KEY_A
 	private var right = GLFW_KEY_D
 
-	//RES
-	lateinit var vao : VAO
+	private lateinit var shader : ComputeProgram
+	private lateinit var posSSBO : SSBO2f
+	private lateinit var sizeSSBO : SSBO1f
+	private lateinit var colorSSBO : SSBO3f
 
 	fun updatePlayerPosition(dtime : Float, input : InputHandler) {
 		val delta = Vector2f()
@@ -44,7 +54,10 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	}
 
 	fun generateResources() {
-		val
-		FloatArray(NUM_PARTICLES * 2 * 4) {}
+		posSSBO = SSBO2f(FloatArray(2 * NUM_PARTICLES))
+		sizeSSBO = SSBO1f(FloatArray(NUM_PARTICLES) {random().toFloat()})
+		colorSSBO = SSBO3f(Array(NUM_PARTICLES) {
+			Vector3f(0.5f + random().toFloat() / 2f, 0f + random().toFloat(), random().toFloat() / 10f)
+		}.toFloatArray())
 	}
 }
