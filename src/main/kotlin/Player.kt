@@ -83,7 +83,8 @@ class Player(w : EnigWindow) : Camera2D(w) {
 			hp = min(hp + recoverySpeed, 1f)
 		}
 
-		fireSource.setVolume(hp / 2f)
+		fireSource.setVolume(clamp(hp, 0f, 1f) / 3f + 0.5f)
+		fireSource.setPitch(1.5f - clamp(hp, 0f, 1f) / 2f)
 
 		shotCD -= dtime
 		if (input.mouseButtons[GLFW_MOUSE_BUTTON_LEFT].isDown && shotCD < 0) {
@@ -145,7 +146,8 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 	fun playSound(sound : Sound, volume : Float) {
 		sources[sourceIndex].stop()
-		sources[sourceIndex].setVolume(1f)
+		sources[sourceIndex].setVolume(volume)
+		sources[sourceIndex++].playSound(sound)
 		sourceIndex %= sources.size
 	}
 
