@@ -20,8 +20,10 @@ enum class ProjectileType {
 
 	companion object {
 		private lateinit var waterTex : Texture
+		private lateinit var playerProjTex : Texture
 		fun generateResources() {
 			waterTex = Texture("projectile.png")
+			playerProjTex = Texture("playerShot.png")
 		}
 	}
 }
