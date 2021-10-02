@@ -41,6 +41,8 @@ class Main(w : EnigWindow) : EnigView() {
 	override fun loop(frameBirth : Long, dtime : Float) : Boolean {
 		FBO.prepareDefaultRender()
 
+		player.generateParticles(dtime, world.time)
+
 		player.updatePlayerPosition(dtime, input)
 		world.update(dtime, player)
 

@@ -30,6 +30,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 	private lateinit var shader : ComputeProgram
 	private lateinit var posSSBO : SSBO2f
+	private lateinit var velSSBO : SSBO2f
 	private lateinit var sizeSSBO : SSBO1f
 	private lateinit var colorSSBO : SSBO3f
 
@@ -57,12 +58,16 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		shader[0] = this
 		shader[1] = dtime
 		shader[2] = time
+		posSSBO.bindToPosition(0)
+		velSSBO.bindToPosition(1)
+		sizeSSBO.bindToPosition(2)
 		shader.run(NUM_PARTICLES)
 	}
 
 	fun generateResources() {
 		shader = ComputeProgram("particles.glsl")
 		posSSBO = SSBO2f(FloatArray(2 * NUM_PARTICLES))
+		velSSBO = SSBO2f(FloatArray(2 * NUM_PARTICLES))
 		sizeSSBO = SSBO1f(FloatArray(NUM_PARTICLES) {random().toFloat()})
 		colorSSBO = SSBO3f(Array(NUM_PARTICLES) {
 			Vector3f(0.5f + random().toFloat() / 2f, 0f + random().toFloat(), random().toFloat() / 10f)
