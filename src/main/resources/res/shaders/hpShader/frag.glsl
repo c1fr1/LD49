@@ -5,6 +5,9 @@ out vec4 color;
 uniform float hp;
 
 void main() {
-	color = vec4(1, 1, 1, strength);
-	color.xy -= tc / 10;
+	if (hp < x) {
+		color = vec4(1, 0, 0, 1);
+	} else {
+		color = vec4(0, 1, 0, 1);
+	}
 }

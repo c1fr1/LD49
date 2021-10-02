@@ -53,6 +53,9 @@ class Main(w : EnigWindow) : EnigView() {
 		squareVAO.prepareRender()
 		squareVAO.drawTriangles()
 		hpShader.enable()
-		hpShader[ShaderType.VERTEX_SHADER, 0] = Matrix4f().translate(0f, -1f, 0f).scale(1f, 0.01f, 1f);
+		hpShader[ShaderType.VERTEX_SHADER, 0] = Matrix4f().translate(0f, -1f, 0f).scale(1f, 0.02f, 1f)
+		hpShader[ShaderType.FRAGMENT_SHADER, 0] = player.hp
+		squareVAO.drawTriangles()
+		squareVAO.unbind()
 	}
 }

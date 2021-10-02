@@ -3,6 +3,7 @@ import engine.opengl.EnigWindow
 import engine.opengl.InputHandler
 import org.joml.Vector2f
 import org.lwjgl.glfw.GLFW.*
+import kotlin.math.min
 
 class Player(w : EnigWindow) : Camera2D(w) {
 
@@ -31,6 +32,6 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 		val recoverySpeed = 5f
 
-		hp += dtime * recoverySpeed
+		hp = min(hp + dtime * recoverySpeed, 1f)
 	}
 }
