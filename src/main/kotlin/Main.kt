@@ -1,7 +1,10 @@
 import engine.EnigView
 import engine.opengl.*
 import engine.opengl.bufferObjects.*
+import engine.opengl.shaders.Shader
+import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
+import org.joml.Matrix4f
 import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
 
 fun main() {
@@ -22,11 +25,13 @@ class Main(w : EnigWindow) : EnigView() {
 	var world = World()
 
 	lateinit var squareVAO : VAO
+	lateinit var hpShader : ShaderProgram
 
 	override fun generateResources(window: EnigWindow) {
 		super.generateResources(window)
 
 		squareVAO = VAO(-1f, -1f, 2f, 2f)
+		hpShader = ShaderProgram("hpShader")
 
 		world.generateResources()
 	}
@@ -45,6 +50,9 @@ class Main(w : EnigWindow) : EnigView() {
 
 	fun renderPlayer() {
 		world.tileShader[ShaderType.VERTEX_SHADER, 0] = player.getMatrix().translate(player.x, player.y, 0f).scale(2f)
-		squareVAO.fullRender()
+		squareVAO.prepareRender()
+		squareVAO.drawTriangles()
+		hpShader.enable()
+		hpShader[ShaderType.VERTEX_SHADER, 0] = Matrix4f().translate(0f, -1f, 0f).scale(1f, 0.01f, 1f);
 	}
 }

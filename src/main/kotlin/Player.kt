@@ -5,6 +5,10 @@ import org.joml.Vector2f
 import org.lwjgl.glfw.GLFW.*
 
 class Player(w : EnigWindow) : Camera2D(w) {
+
+	var hp = 1f
+
+	// CONTROLS
 	private var forward = GLFW_KEY_W
 	private var backward = GLFW_KEY_S
 	private var left = GLFW_KEY_A
@@ -24,5 +28,9 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		}
 		x += delta.x
 		y += delta.y
+
+		val recoverySpeed = 5f
+
+		hp += dtime * recoverySpeed
 	}
 }
