@@ -6,13 +6,19 @@ import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
 import org.joml.Vector2f
 
-class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
+abstract class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 
-	var attackTimer = 1f
+	open var attackTimer = 1f
 
-	fun udpate(dtime : Float) {
-		attackTimer -= dtime 
+	fun udpate(dtime : Float, projectileList : ArrayList<Projectile>, playerPos : Orientation2D) {
+		attackTimer -= dtime
+		if (attackTimer < 0) {
+			attackTimer = 1f
+			shootProjectiles()
+		}
 	}
+
+	abstract fun shootProjectiles()
 
 	companion object {
 		lateinit var hydrantTex : Texture
