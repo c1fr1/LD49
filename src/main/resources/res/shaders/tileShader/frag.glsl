@@ -18,7 +18,7 @@ void main() {
 	vec2 realPos = pos;
 	realPos.x += tc.x;
 	realPos.y -= tc.y;
-	float noise = gnoise(vec4(2 * realPos, time, 0)) / 2 + 0.5;
+	float noise = gnoise(vec4(2 * realPos, time / 15, 0)) / 2 + 0.5;
 	if (noise > strength) {
 		color.w = 0;
 	}
