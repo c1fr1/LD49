@@ -11,7 +11,8 @@ import java.util.*
 import kotlin.math.roundToInt
 
 class World {
-	val enemies = arrayListOf(Enemy(0f, 10f))
+	val enemies = arrayListOf<Enemy>(LinearEnemy(0f, 10f))
+	val projectiles = ArrayList<Projectile>()
 	val tiles : LinkedList<Array<Float>> = LinkedList()
 	var ditchedRows = 0
 	private val rowsShownBelowCam = 10
