@@ -60,6 +60,7 @@ class World {
 		for (row in tiles) {
 			for (x in row.indices) {
 				tileShader[ShaderType.FRAGMENT_SHADER, 0] = row[x]
+				tileShader[ShaderType.FRAGMENT_SHADER, 1] = Vector2f(x.toFloat(), y.toFloat())
 				tileShader[ShaderType.VERTEX_SHADER, 0] = camera.getMatrix().scale(5f).translate((x - rowWidth / 2).toFloat(), y.toFloat(), 0f)
 				tileVAO.drawTriangles()
 			}
