@@ -118,7 +118,8 @@ class World {
 			++ditchedRows
 		}
 
-		while (tiles.size - requiredRowsAboveCam < playerPos.y) addRow(true)
+		while (tiles.size - playerPos.y < requiredRowsAboveCam) addRow(true)
+		println("${tiles.size} tiles, ${playerPos.y}")
 	}
 
 	fun getTileX(x : Float) = floor(x / 5f + (rowWidth / 2)).toInt()
