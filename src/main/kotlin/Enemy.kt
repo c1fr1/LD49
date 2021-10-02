@@ -14,11 +14,11 @@ abstract class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 		attackTimer -= dtime
 		if (attackTimer < 0) {
 			attackTimer = 1f
-			shootProjectiles()
+			shootProjectiles(projectileList, playerPos)
 		}
 	}
 
-	abstract fun shootProjectiles()
+	abstract fun shootProjectiles(projectileList : ArrayList<Projectile>, playerPos : Orientation2D)
 
 	companion object {
 		lateinit var hydrantTex : Texture
