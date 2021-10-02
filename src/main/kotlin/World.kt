@@ -96,11 +96,10 @@ class World {
 	}
 
 	fun degradeTiles(dtime : Float, player : Vector2fc) {
-		val posll = getTilePosForWorldPos(player + Vector2f(-2f, -2f))
+		/*val posll = getTilePosForWorldPos(player + Vector2f(-2f, -2f))
 		val posul = getTilePosForWorldPos(player + Vector2f(-2f, 2f))
 		val poslr = getTilePosForWorldPos(player + Vector2f(2f, -2f))
 		val posur = getTilePosForWorldPos(player + Vector2f(2f, 2f))
-		val degradingFactor = dtime / 2f
 		if (boundsCheck(posll) && posll != posul && posll != poslr && posll != posur) {
 			set(posll, get(posll) - degradingFactor)
 		}
@@ -112,11 +111,23 @@ class World {
 		}
 		if (boundsCheck(posur)) {
 			set(posur, get(posur) - degradingFactor)
+		}*/
+		val degradingFactor = dtime / 2f
+
+		val playerPos = getTilePosForWorldPos(player)
+		var y = ditchedRows - rowsShownBelowCam
+		for (row in tiles) {
+			for (x in row.indices) {
+				if (playerPos.x == x && playerPos.y == y) {
+					row[x] -= degradingFactor
+				} else if (row[x] < 0.75) {
+					row[x] -= degradingFactor / 2f;
+				}
+			}
+			++y
 		}
 
-		var y = ditchedRows - rowsShownBelowCam
-
-		while (tiles.size - requiredRowsAboveCam < posul.y) addRow()
+		while (tiles.size - requiredRowsAboveCam < playerPos.y) addRow()
 	}
 
 	fun getTilePosForWorldPos(pos : Vector2fc) : Vector2i {
