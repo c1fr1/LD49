@@ -1,4 +1,5 @@
 import engine.entities.Camera2D
+import engine.opengl.Texture
 import engine.opengl.bufferObjects.VAO
 import engine.opengl.jomlExtensions.plus
 import engine.opengl.shaders.ShaderProgram
@@ -21,6 +22,7 @@ class World {
 
 	lateinit var tileShader : ShaderProgram
 	lateinit var tileVAO : VAO
+	lateinit var tileTexture : Texture
 
 	constructor(rowWidth : Int = 20) {
 		this.rowWidth = rowWidth
@@ -32,6 +34,7 @@ class World {
 	fun generateResources() {
 		tileVAO = VAO(0f, 0f, 1f, 1f)
 		tileShader = ShaderProgram("tileShader")
+		tileTexture = Texture("tiles/tile0.png")
 		Enemy.generateResources()
 		ProjectileType.generateResources()
 	}
@@ -52,6 +55,7 @@ class World {
 	fun renderTiles(camera : Camera2D) {
 		tileShader.enable()
 		tileVAO.prepareRender()
+		tileTexture.bind()
 		var y = ditchedRows - rowsShownBelowCam
 		for (row in tiles) {
 			for (x in row.indices) {
