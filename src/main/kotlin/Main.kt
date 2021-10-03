@@ -12,6 +12,7 @@ fun main() {
 		view.runInGLSafe(window)
 		window.inputHandler.update()
 		if (view.nextView == 1) {
+			gameView.tutorialManager.step = -1
 			gameView.runInGLSafe(window)
 			window.inputHandler.update()
 		} else if (view.nextView == 2) {

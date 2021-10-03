@@ -52,12 +52,38 @@ class GameView(w : EnigWindow) : EnigView() {
 		player.render(squareVAO, texShader)
 		renderHPBar()
 		renderScore()
+		if (tutorialManager.step in tutorialManager.texts.indices) {
+			renderTutorialText()
+		}
 
 		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Pressed
 	}
 
 	fun renderTutorialText() {
+		textShader.enable()
+		world.tileVAO.prepareRender()
+		font.bind()
 
+		lateinit var texMats : Array<Matrix4f>
+		lateinit var worldMats : Array<Matrix4f>
+		var y = 0
+		for (text in tutorialManager.texts[tutorialManager.step]) {
+			font.getMats(
+				text,
+				player.projectionMatrix.translate(-aspect * 50f + 4f, 30 - y * 10f, 0f, Matrix4f()).scale(5f, Matrix4f())
+			) { wm, tm ->
+				worldMats = wm
+				texMats = tm
+			}
+			textShader[ShaderType.FRAGMENT_SHADER, 0] = Vector3f(1f, 1f, 1f);
+			for (i in texMats.indices) {
+				textShader[ShaderType.VERTEX_SHADER, 0] = worldMats[i]
+				textShader[ShaderType.VERTEX_SHADER, 1] = texMats[i]
+				world.tileVAO.fullRender()
+			}
+			++y
+		}
+		world.tileVAO.unbind()
 	}
 
 	fun renderScore() {
@@ -71,7 +97,6 @@ class GameView(w : EnigWindow) : EnigView() {
 			texMats = tm
 		}
 		font.bind()
-		checkGLError()
 		textShader[ShaderType.FRAGMENT_SHADER, 0] = Vector3f(1f, 1f, 1f);
 		for (i in texMats.indices) {
 			textShader[ShaderType.VERTEX_SHADER, 0] = worldMats[i]
