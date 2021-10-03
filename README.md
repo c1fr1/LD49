@@ -54,7 +54,7 @@ not instant death?
 - [x] add enemies "rooted" to ground
 - [x] score
 - [x] wall enemy 
-- [ ] menus
+- [x] menus
 - [ ] dash
 - [ ] more enemies
 - [ ] fix relative sounds?

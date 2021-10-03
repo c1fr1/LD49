@@ -112,7 +112,7 @@ class GameView(w : EnigWindow) : EnigView() {
 			renderCenteredText("Game Over", 20f)
 			renderCenteredText("Final Score Is ${world.score}", 0f)
 			renderCenteredText("press ESC to return to the main menu", -20f)
-			if (world.score >= HighScoreManager.highScore) {
+			if (world.score >= HighScoreManager.highScore && tutorialManager.step < 0) {
 				renderCenteredText("HIGH SCORE!", 40f)
 				HighScoreManager.highScore = world.score
 			}
@@ -154,6 +154,7 @@ class GameView(w : EnigWindow) : EnigView() {
 
 	fun reset() {
 		player.hp = 1f
+		player.projectiles.clear()
 		player.x = 0f
 		player.y = 0f
 		world.reset()

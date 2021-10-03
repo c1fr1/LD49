@@ -17,7 +17,9 @@ class TutorialManager {
 	var exampleHydrantr : HydrantEnemy? = null
 	fun manage(world : World, player : Player, dtime : Float) {
 		timeOnStep += dtime
-		world.enemies.removeAll{!(it === exampleExtinguisher) && !(it === exampleHydrantl) && !(it === exampleHydrantr)}
+		if (step in texts.indices) {
+			world.enemies.removeAll{!(it === exampleExtinguisher) && !(it === exampleHydrantl) && !(it === exampleHydrantr)}
+		}
 		when (step) {
 			0 -> {
 				for (row in world.tiles) {
@@ -32,7 +34,7 @@ class TutorialManager {
 				}
 			}
 			1 -> {
-				if (timeOnStep > 5f) {
+				if (timeOnStep > 10f) {
 					val playerPos = world.getTilePos(player)
 					exampleExtinguisher = LinearEnemy(world.getWorldPositionX(playerPos.x), world.getWorldPositionY(playerPos.y + 7))
 					world.enemies.add(exampleExtinguisher!!)
@@ -46,6 +48,7 @@ class TutorialManager {
 					exampleExtinguisher = LinearEnemy(world.getWorldPositionX((random() * world.rowWidth).toInt()), world.getWorldPositionY(playerPos.y + 7))
 					exampleHydrantl = HydrantEnemy(world.getWorldPositionX(0), world.getWorldPositionY(playerPos.y + 9))
 					exampleHydrantr = HydrantEnemy(world.getWorldPositionX(world.rowWidth - 1), world.getWorldPositionY(playerPos.y + 9))
+					world.enemies.add(exampleExtinguisher!!)
 					world.enemies.add(exampleHydrantl!!)
 					world.enemies.add(exampleHydrantr!!)
 					++step
@@ -56,6 +59,11 @@ class TutorialManager {
 				if (exampleHydrantl!!.hp < 0f && exampleHydrantr!!.hp < 0f) {
 					++step
 					timeOnStep = 0f
+				}
+			}
+			4 -> {
+				if (timeOnStep < 5f) {
+					++step
 				}
 			}
 		}

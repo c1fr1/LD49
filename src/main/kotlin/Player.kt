@@ -40,6 +40,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	private var backward = GLFW_KEY_S
 	private var left = GLFW_KEY_A
 	private var right = GLFW_KEY_D
+	private var dash = GLFW_KEY_LEFT_SHIFT
 
 	private lateinit var compShader : ComputeProgram
 	private lateinit var shader : ShaderProgram
