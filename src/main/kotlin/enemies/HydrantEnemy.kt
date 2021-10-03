@@ -16,6 +16,10 @@ class HydrantEnemy(x : Float, y : Float) : Enemy(x, y) {
 	override var attackTimer : Float = 0.1f
 	override val bounty = 30
 
+	init {
+		rotation = -PIf / 2f
+	}
+
 	override fun update(dtime: Float, world: World, playerPos: Orientation2D) {
 		super.update(dtime, world, playerPos)
 		if (world.enemies.any { it.y < y }) {

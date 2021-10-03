@@ -2,6 +2,7 @@ package enemies
 
 import Projectile
 import World
+import engine.PIf
 import engine.entities.Camera2D
 import engine.entities.Orientation2D
 import engine.openal.Sound
@@ -60,7 +61,7 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 					is HydrantEnemy -> hydrantTex.bind()
 					is LinearEnemy -> extinguisherTex.bind()
 				}
-				shader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix().translate(enemy.x, enemy.y, 0f).scale(2f)
+				shader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix().translate(enemy.x, enemy.y, 0f).scale(2f).rotateZ(enemy.rotation + PIf / 2f)
 				square.drawTriangles()
 			}
 			square.unbind()
