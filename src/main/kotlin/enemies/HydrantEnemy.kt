@@ -13,6 +13,7 @@ import org.joml.Vector2i
 import kotlin.math.sign
 
 class HydrantEnemy(x : Float, y : Float) : Enemy(x, y) {
+	override var attackTimer : Float = 0f
 	override val bounty = 30
 
 	override fun update(dtime: Float, world: World, playerPos: Orientation2D) {

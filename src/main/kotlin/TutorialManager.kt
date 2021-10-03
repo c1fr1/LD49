@@ -17,6 +17,7 @@ class TutorialManager {
 	var exampleHydrantr : HydrantEnemy? = null
 	fun manage(world : World, player : Player, dtime : Float) {
 		timeOnStep += dtime
+		world.enemies.removeAll{!(it === exampleExtinguisher) && !(it === exampleHydrantl) && !(it === exampleHydrantr)}
 		when (step) {
 			0 -> {
 				for (row in world.tiles) {

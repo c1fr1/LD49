@@ -109,10 +109,11 @@ class GameView(w : EnigWindow) : EnigView() {
 			}
 			world.tileVAO.unbind()
 		} else {
-			renderCenteredText("Game Over", -25f)
-			renderCenteredText("Final Score Is ${world.score}", -5f)
+			renderCenteredText("Game Over", 20f)
+			renderCenteredText("Final Score Is ${world.score}", 0f)
+			renderCenteredText("press ESC to return to the main menu", -20f)
 			if (world.score >= HighScoreManager.highScore) {
-				renderCenteredText("HIGH SCORE!", 15f)
+				renderCenteredText("HIGH SCORE!", 40f)
 				HighScoreManager.highScore = world.score
 			}
 		}
