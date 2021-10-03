@@ -7,6 +7,7 @@ out vec4 color;
 uniform float strength;
 uniform float time;
 uniform float aspect;
+uniform float id;
 
 uniform sampler2D texSampler;
 
@@ -18,7 +19,7 @@ void main() {
 	color = texture(texSampler, tc.yx);
 	color.g = (color.r + color.b) / 2;
 
-	float noise = gnoise(vec4(3 * tc.x * aspect, 3 * tc.y, time / 15, 0)) / 2 + 0.5;
+	float noise = gnoise(vec4(3 * tc.x * aspect, 3 * tc.y, time / 15, id * 10)) / 2 + 0.5;
 	if (noise > strength) {
 		color.w = 0;
 	}

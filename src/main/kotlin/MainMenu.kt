@@ -92,6 +92,7 @@ class MainMenu(w : EnigWindow) : EnigView() {
 		buttonShader[ShaderType.FRAGMENT_SHADER, 0] = button.strength
 		buttonShader[ShaderType.FRAGMENT_SHADER, 1] = time * 2
 		buttonShader[ShaderType.FRAGMENT_SHADER, 2] = button.width
+		buttonShader[ShaderType.FRAGMENT_SHADER, 3] = button.y
 		vao.fullRender()
 	}
 

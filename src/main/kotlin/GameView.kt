@@ -113,7 +113,7 @@ class GameView(w : EnigWindow) : EnigView() {
 			val width = text.sumOf { font.charData[it.code - 32].xadvance().toDouble() }
 			font.getMats(
 				text,
-				player.projectionMatrix.translate(-aspect * 50f + 4f, 40f, 0f, Matrix4f()).scale(10f, Matrix4f())
+				player.projectionMatrix.translate(-50f, -5f, 0f, Matrix4f()).scale(10f, Matrix4f())
 			) { wm, tm ->
 				worldMats = wm
 				texMats = tm
