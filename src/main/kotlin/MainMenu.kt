@@ -9,6 +9,7 @@ import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
 import java.nio.file.Paths
 import kotlin.math.max
 import kotlin.math.min
+import org.joml.Vector3f
 
 class MainMenu(w : EnigWindow) : EnigView() {
 
@@ -50,6 +51,7 @@ class MainMenu(w : EnigWindow) : EnigView() {
 		playButton.updateStrength(window.inputHandler, dtime)
 
 		renderButtonBackground(playButton)
+		renderButtonText(playButton)
 
 		time += dtime
 		nextView = -1
@@ -61,10 +63,28 @@ class MainMenu(w : EnigWindow) : EnigView() {
 		woodTex.bind()
 		buttonShader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix()
 			.translate(0.1f-window.aspectRatio, 0f, 0f)
+			.scale(button.width  * 0.2f, 0.2f, 1f)
 		buttonShader[ShaderType.FRAGMENT_SHADER, 0] = button.strength
 		buttonShader[ShaderType.FRAGMENT_SHADER, 1] = time * 2
-		buttonShader[ShaderType.FRAGMENT_SHADER, 2] = 1f
+		buttonShader[ShaderType.FRAGMENT_SHADER, 2] = button.width
 		vao.fullRender()
+	}
+
+	fun renderButtonText(button : Button) {
+		textShader.enable()
+		vao.prepareRender()
+		font.bind()
+		font.getMats(button.text, cam.getMatrix()
+			.translate(0.15f - window.aspectRatio, 0.05f, 0f)
+			.scale(0.2f)) {wm, tm ->
+			for (i in wm.indices) {
+				textShader[ShaderType.VERTEX_SHADER, 0] = wm[i]
+				textShader[ShaderType.VERTEX_SHADER, 1] = tm[i]
+				textShader[ShaderType.FRAGMENT_SHADER, 0] = Vector3f(1f, 1f, 1f)
+				vao.drawTriangles()
+			}
+		}
+		vao.unbind()
 	}
 }
 
