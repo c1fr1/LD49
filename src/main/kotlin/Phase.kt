@@ -3,23 +3,26 @@ import enemies.LinearEnemy
 import enemies.Sprinkler
 import org.joml.Math.random
 
-enum class Phase(val numExts : Int, val sprinklers : Int, val avgLength : Int) {
-	ext(4, 0, 20),
-	empty(0, 0, 10),
-	sprinkle(0, 2, 20),
-	mix(2, 1, 30);
+enum class Phase(val numExts : Int, val sprinklers : Int, sprayers, val avgLength : Int) {
+	ext(4, 0, 0, 20),
+	sprinkle(0, 2, 0, 20),
+	extSprinkle(2, 1, 0, 30),
+	sprinkleSpray(0, 1, 1, 20),
+	extSpray(2, 0, 1, 15),
+	empty(0, 0, 0, 10),
+	;
 
 	fun getLength() : Int {
 		return avgLength + (5f * (random() - 0.5)).toInt()
 	}
 
 	fun getEnemies(difficulty : Float, world : World, addFunction : (Enemy) -> Unit) {
-		for (x in 0 until (numExts * difficulty).toInt()) {
+		for (x in 0 until ((numExts + random()) * difficulty).toInt()) {
 			val x = world.getWorldPositionX((random() * world.rowWidth).toInt())
 			val y = world.getWorldPositionY((random() * world.rowsInSection).toInt() + world.tiles.size)
 			addFunction(LinearEnemy(x, y))
 		}
-		for (x in 0 until (sprinklers * difficulty).toInt()) {
+		for (x in 0 until ((sprinklers + random() / 2f) * difficulty).toInt()) {
 			val x = world.getWorldPositionX((random() * world.rowWidth).toInt())
 			val y = world.getWorldPositionY((random() * world.rowsInSection).toInt() + world.tiles.size)
 			addFunction(Sprinkler(x, y))
@@ -28,15 +31,15 @@ enum class Phase(val numExts : Int, val sprinklers : Int, val avgLength : Int) {
 
 	companion object {
 		fun randomType() : Phase {
-			val r = random()
-			return if (r < 0.3) {
+			val r = random() * 13
+			return if (r <2) {
 				ext
 			} else if (r < 0.4) {
 				empty
 			} else if (r < 0.7) {
 				sprinkle
 			} else {
-				mix
+				extSprinkle
 			}
 		}
 	}

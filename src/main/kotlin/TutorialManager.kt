@@ -6,6 +6,7 @@ class TutorialManager {
 	var step = -1
 	var texts = arrayOf(
 		arrayOf("WASD to move, left click to shoot"),
+		arrayOf("left shift to dash"),
 		arrayOf("tiles burn when you stand of them", "you will rapidly loose health when not standing on a tile", "enemies protect the tiles around them"),
 		arrayOf("despite appearances, this is a fire extinguisher", "it hurts, but you can kill it too!"),
 		arrayOf("fire hydrants are invincible while there are enemies below them", "you will not survive trying to pass them"),
@@ -34,6 +35,17 @@ class TutorialManager {
 				}
 			}
 			1 -> {
+				for (row in world.tiles) {
+					for (i in row.indices) {
+						row[i] = 1f
+					}
+				}
+				if (timeOnStep > 1f && player.dashCD > 0) {
+					++step
+					timeOnStep = 0f
+				}
+			}
+			2 -> {
 				if (timeOnStep > 10f) {
 					val playerPos = world.getTilePos(player)
 					exampleExtinguisher = LinearEnemy(world.getWorldPositionX(playerPos.x), world.getWorldPositionY(playerPos.y + 7))
@@ -42,7 +54,7 @@ class TutorialManager {
 					timeOnStep = 0f
 				}
 			}
-			2 -> {
+			3 -> {
 				if (exampleExtinguisher!!.hp < 0f) {
 					val playerPos = world.getTilePos(player)
 					exampleExtinguisher = LinearEnemy(world.getWorldPositionX((random() * world.rowWidth).toInt()), world.getWorldPositionY(playerPos.y + 7))
@@ -55,13 +67,13 @@ class TutorialManager {
 					timeOnStep = 0f
 				}
 			}
-			3 -> {
+			4 -> {
 				if (exampleHydrantl!!.hp < 0f && exampleHydrantr!!.hp < 0f) {
 					++step
 					timeOnStep = 0f
 				}
 			}
-			4 -> {
+			5 -> {
 				if (timeOnStep < 5f) {
 					++step
 				}
