@@ -13,6 +13,7 @@ class LinearEnemy(x : Float, y : Float) : Enemy(x, y) {
 	override val bounty : Int = 10
 
 	override fun shootProjectiles(projectileList : ArrayList<Projectile>, playerPos : Orientation2D) {
+		attackTimer = 1.75f + Math.random().toFloat() / 4f
 		val del = playerPos - this
 		rotation = atan2(del.y, del.x)
 		projectileList.add(LinearProjectile(this))

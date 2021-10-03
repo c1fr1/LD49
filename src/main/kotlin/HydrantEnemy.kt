@@ -4,12 +4,13 @@ import org.joml.Math.abs
 import org.joml.Matrix4f
 import org.joml.Vector2f
 import org.joml.Vector2i
+import kotlin.math.sign
 
 class HydrantEnemy(x : Float, y : Float) : Enemy(x, y) {
 	override val bounty = 30
 
 	override fun shootProjectiles(projectileList : ArrayList<Projectile>, playerPos : Orientation2D) {
-
+		attackTimer = 0.1f
 		val dir = if (x > 0) {
 			-50f
 		} else {
@@ -22,10 +23,10 @@ class HydrantEnemy(x : Float, y : Float) : Enemy(x, y) {
 }
 
 class hydrantProjectile(val vel : Float, val max : Float) : Projectile, Vector2f() {
-	override val type: ProjectileType = ProjectileType.water
+	override val type : ProjectileType = ProjectileType.water
 	override fun updatePosition(dtime : Float, player : Player): Boolean {
-		x += vel * dtime
-		if (player.y > y) {
+		x += 40f * dtime
+		if (player.y < y) {
 			player.hp = -1f
 			player.landHit()
 			return true
@@ -33,8 +34,6 @@ class hydrantProjectile(val vel : Float, val max : Float) : Projectile, Vector2f
 		return abs(x) > max
 	}
 
-	override fun transformMat(cam: Matrix4f): Matrix4f {
-		TODO("Not yet implemented")
-	}
+	override fun transformMat(cam: Matrix4f) : Matrix4f = cam.translate(0f, 0f, 0f)/*.rotateZ( PIf / 2 * sign(vel))*/
 
 }
