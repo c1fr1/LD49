@@ -143,7 +143,7 @@ class World {
 	fun getTileX(x : Float) = floor(x / 5f + (rowWidth / 2)).toInt()
 	fun getTileY(y : Float) = (y / 5f).toInt() + rowsShownBelowCam - ditchedRows
 
-	fun getTilePos(pos : Vector2fc) =Vector2i(getTileX(pos.x()), getTileY(pos.y()))
+	fun getTilePos(pos : Vector2fc) = Vector2i(getTileX(pos.x()), getTileY(pos.y()))
 
 	fun boundsCheck(pos : Vector2f) = boundsCheck(getTilePos(pos))
 
