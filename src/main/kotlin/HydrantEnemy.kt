@@ -33,7 +33,7 @@ class hydrantProjectile(val vel : Float, val max : Float, enemy : Vector2f) : Pr
 	override val type : ProjectileType = ProjectileType.water
 	override fun updatePosition(dtime : Float, player : Player): Boolean {
 		x += vel * dtime
-		if (player.y > y) {
+		if (player.y > y && abs(player.x - x) < 5f) {
 			player.hp = -1f
 			player.landHit()
 			return true
