@@ -12,6 +12,8 @@ import engine.opengl.bufferObjects.SSBO2f
 import engine.opengl.bufferObjects.SSBO3f
 import engine.opengl.bufferObjects.VAO
 import engine.opengl.checkGLError
+import engine.opengl.jomlExtensions.minus
+import engine.opengl.jomlExtensions.plus
 import engine.opengl.jomlExtensions.toFloatArray
 import engine.opengl.shaders.ComputeProgram
 import engine.opengl.shaders.ShaderProgram
@@ -76,15 +78,19 @@ class Player(w : EnigWindow) : Camera2D(w) {
 			val targetPos = Vector2f(this)
 			targetPos.x += aspectRatio * 50 * input.glCursorX
 			targetPos.y -= 50 * input.glCursorY
+			if (targetPos.distance(this) > 20f) {
+				set(this + (targetPos - this).normalize(20f))
+			} else {
+				set(targetPos)
+			}
 			dashCD = 2f
-			set(targetPos)
 		}
 		dashCD -= dtime
 
 		var speed = dtime * 20
 
 		internalCam.lerp(this, 0.1f)
-		if (internalCam.distance(this) < speed * 1.5f) {
+		if (internalCam.distance(this) < speed * 2f) {
 			internalCam.set(this)
 		}
 

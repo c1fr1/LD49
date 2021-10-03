@@ -55,7 +55,7 @@ not instant death?
 - [x] score
 - [x] wall enemy 
 - [x] menus
-- [ ] dash
+- [x] dash
 - [ ] more enemies
 - [ ] fix relative sounds?
 - [ ] ???
