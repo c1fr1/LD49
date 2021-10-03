@@ -56,7 +56,8 @@ float realStrength() {
 }
 
 void main() {
-	color = texture(texSampler, tc);
+	vec2 texid = vec2(mod(101 * pos.x, 8), mod(101 * pos.y, 8));
+	color = texture(texSampler, (tc + texid) / 8);
 	vec2 realPos = calcRealPos();
 
 	float realStr = realStrength();

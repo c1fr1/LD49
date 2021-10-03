@@ -37,7 +37,7 @@ class World {
 	fun generateResources() {
 		tileVAO = VAO(0f, 0f, 1f, 1f)
 		tileShader = ShaderProgram("tileShader")
-		tileTexture = Texture("tiles/tile0.png")
+		tileTexture = Texture("tiles/woodTex.png")
 		Enemy.generateResources()
 		ProjectileType.generateResources()
 	}
