@@ -10,6 +10,7 @@ import java.nio.file.Paths
 import kotlin.math.max
 import kotlin.math.min
 import org.joml.Vector3f
+import org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT
 
 class MainMenu(w : EnigWindow) : EnigView() {
 
@@ -21,9 +22,9 @@ class MainMenu(w : EnigWindow) : EnigView() {
 
 	var nextView = 0
 
-	val playButton = Button(0.5f, 2.3f, "PLAY")
-	val tutorialButton = Button(0.2f, 2.3f, "TUTORIAL")
-	val quitButton = Button(-0.1f, 2.75f, "QUIT")
+	val playButton = Button(0.4f, 2.3f, "PLAY")
+	val tutorialButton = Button(-0.1f, 4.75f, "TUTORIAL")
+	val quitButton = Button(-0.6f, 2.75f, "QUIT")
 
 	lateinit var buttonShader : ShaderProgram
 	lateinit var textShader : ShaderProgram
@@ -57,7 +58,23 @@ class MainMenu(w : EnigWindow) : EnigView() {
 		renderButton(quitButton)
 
 		time += dtime
+
+		if (window.inputHandler.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == KeyState.Released) {
+			if (playButton.hovering(window)) {
+				nextView = 1
+				return true
+			}
+			if (tutorialButton.hovering(window)) {
+				nextView = 2
+				return true
+			}
+			if (quitButton.hovering(window)) {
+				nextView = -1
+				return true
+			}
+		}
 		nextView = -1
+
 		return window.inputHandler.keys[GLFW_KEY_ESCAPE] == KeyState.Released
 	}
 
