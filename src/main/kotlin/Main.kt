@@ -5,11 +5,11 @@ import engine.opengl.GLContextPreset
 fun main() {
 	EnigContext.init()
 	val window = EnigWindow("LD49", GLContextPreset.standard2D)
-	val view = MainMenu(window)
+	val view = GameView(window)
 
-	while (view.nextView != -1) {
-		view.runInGLSafe(window)
-	}
+	view.runInGLSafe(window)
+	/*while (view.nextView != -1) {
+	}*/
 
 	EnigContext.terminate()
 }

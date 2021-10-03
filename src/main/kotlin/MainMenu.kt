@@ -46,11 +46,10 @@ class MainMenu(w : EnigWindow) : EnigView() {
 
 		buttonShader.enable()
 		woodTex.bind()
-		buttonShader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix()
-		buttonShader[ShaderType.FRAGMENT_SHADER, 0] = 0.8f
-		buttonShader[ShaderType.FRAGMENT_SHADER, 0] = 0.8f
-		buttonShader[ShaderType.FRAGMENT_SHADER, 0] = time
-		buttonShader[ShaderType.FRAGMENT_SHADER, 0] = window.aspectRatio
+		buttonShader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix().scale(50f)
+		buttonShader[ShaderType.FRAGMENT_SHADER, 0] = 0.9f
+		buttonShader[ShaderType.FRAGMENT_SHADER, 1] = time
+		buttonShader[ShaderType.FRAGMENT_SHADER, 2] = 1f
 		vao.fullRender()
 
 		time += dtime

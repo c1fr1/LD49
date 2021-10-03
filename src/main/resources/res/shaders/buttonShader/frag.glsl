@@ -5,7 +5,6 @@ in vec2 tc;
 out vec4 color;
 
 uniform float strength;
-uniform vec2 pos;
 uniform float time;
 uniform float aspect;
 
@@ -16,10 +15,10 @@ vec3 emberSlide(float val) {
 }
 
 void main() {
-	color = texture(texSampler, tc);
+	color = texture(texSampler, tc.yx);
 	color.g = (color.r + color.b) / 2;
 
-	float noise = gnoise(vec4(2 * pos.x * aspect, 2 * pos.y, time / 15, 0)) / 2 + 0.5;
+	float noise = gnoise(vec4(30 * tc.x * aspect, 30 * tc.y, time / 15, 0)) / 2 + 0.5;
 	if (noise > strength) {
 		color.w = 0;
 	}
