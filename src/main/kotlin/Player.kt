@@ -6,6 +6,7 @@ import engine.openal.Sound
 import engine.openal.SoundSource
 import engine.opengl.EnigWindow
 import engine.opengl.InputHandler
+import engine.opengl.KeyState
 import engine.opengl.bufferObjects.SSBO1f
 import engine.opengl.bufferObjects.SSBO2f
 import engine.opengl.bufferObjects.SSBO3f
@@ -33,6 +34,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 	var hp = 1f
 	var shotCD = 0f
+	var dashCD = 0f
 	var projectiles = ArrayList<PlayerProjectile>()
 
 	// CONTROLS
@@ -56,14 +58,35 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	private lateinit var attackSounds : Array<Sound>
 	var sourceIndex = 0
 
+	private val internalCam = Camera2D(w)
+
+	override fun getMatrix(): Matrix4f {
+		return internalCam.getMatrix()
+	}
+
 	fun updatePlayerPosition(dtime : Float, input : InputHandler, world : World, aspectRatio : Float, time : Float) {
+
 		val delta = Vector2f()
 		if (input.keys[forward].isDown) delta.y += 1f
 		if (input.keys[backward].isDown) delta.y -= 1f
 		if (input.keys[left].isDown) delta.x -= 1f
 		if (input.keys[right].isDown) delta.x += 1f
 
+		if (input.keys[dash] == KeyState.Released && dashCD < 0 && hp > 0) {
+			val targetPos = Vector2f(this)
+			targetPos.x += aspectRatio * 50 * input.glCursorX
+			targetPos.y -= 50 * input.glCursorY
+			dashCD = 2f
+			set(targetPos)
+		}
+		dashCD -= dtime
+
 		var speed = dtime * 20
+
+		internalCam.lerp(this, 0.1f)
+		if (internalCam.distance(this) < speed * 1.5f) {
+			internalCam.set(this)
+		}
 
 		if (shotCD > 0) {
 			speed /= 2
