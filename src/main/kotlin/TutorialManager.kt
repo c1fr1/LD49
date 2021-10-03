@@ -1,6 +1,7 @@
 import enemies.HydrantEnemy
 import enemies.LinearEnemy
 import enemies.HydrantProjectile
+import org.joml.Math.random
 
 class TutorialManager {
 	var step = 0
@@ -42,7 +43,17 @@ class TutorialManager {
 			2 -> {
 				if (exampleExtinguisher!!.hp < 0f) {
 					val playerPos = world.getTilePos(player)
-					exampleExtinguisher = LinearEnemy(world.getWorldPositionX(playerPos.x), world.getWorldPositionY(playerPos.y + 7))
+					exampleExtinguisher = LinearEnemy(world.getWorldPositionX((random() * world.rowWidth).toInt()), world.getWorldPositionY(playerPos.y + 7))
+					exampleHydrantl = HydrantEnemy(world.getWorldPositionX(0), world.getWorldPositionY(playerPos.y + 9))
+					exampleHydrantr = HydrantEnemy(world.getWorldPositionX(world.rowWidth - 1), world.getWorldPositionY(playerPos.y + 9))
+					world.enemies.add(exampleHydrantl!!)
+					world.enemies.add(exampleHydrantr!!)
+					++step
+					timeOnStep = 0f
+				}
+			}
+			3 -> {
+				if (exampleHydrantl!!.hp < 0f && exampleHydrantr!!.hp < 0f) {
 					++step
 					timeOnStep = 0f
 				}
