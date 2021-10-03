@@ -1,3 +1,7 @@
+import enemies.HydrantEnemy
+import enemies.LinearEnemy
+import enemies.HydrantProjectile
+
 class TutorialManager {
 	var step = 0
 	var texts = arrayOf(
@@ -8,6 +12,9 @@ class TutorialManager {
 		arrayOf("you gain points by burning the bridge and killing enemies", "good luck!")
 	)
 	var timeOnStep = 0f
+	var exampleExtinguisher : LinearEnemy? = null
+	var exampleHydrantl : HydrantEnemy? = null
+	var exampleHydrantr : HydrantEnemy? = null
 	fun manage(world : World, player : Player, dtime : Float) {
 		timeOnStep += dtime
 		when (step) {
@@ -17,13 +24,27 @@ class TutorialManager {
 						row[i] = 1f
 					}
 				}
+				world.enemies.clear()
 				if (timeOnStep > 1f && player.lengthSquared() > 10f && player.projectiles.isNotEmpty()) {
 					++step
+					timeOnStep = 0f
 				}
 			}
 			1 -> {
 				if (timeOnStep > 5f) {
+					val playerPos = world.getTilePos(player)
+					exampleExtinguisher = LinearEnemy(world.getWorldPositionX(playerPos.x), world.getWorldPositionY(playerPos.y + 7))
+					world.enemies.add(exampleExtinguisher!!)
 					++step
+					timeOnStep = 0f
+				}
+			}
+			2 -> {
+				if (exampleExtinguisher!!.hp < 0f) {
+					val playerPos = world.getTilePos(player)
+					exampleExtinguisher = LinearEnemy(world.getWorldPositionX(playerPos.x), world.getWorldPositionY(playerPos.y + 7))
+					++step
+					timeOnStep = 0f
 				}
 			}
 		}

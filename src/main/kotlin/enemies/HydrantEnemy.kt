@@ -29,13 +29,13 @@ class HydrantEnemy(x : Float, y : Float) : Enemy(x, y) {
 		} else {
 			50f
 		}
-		projectileList.add(hydrantProjectile(dir, abs(x), this))
+		projectileList.add(HydrantProjectile(dir, abs(x), this))
 	}
 
 	override fun protectsTile(worldPos : Vector2i, tx : Int, ty : Int) = ty >= worldPos.y - 1
 }
 
-class hydrantProjectile(val vel : Float, val max : Float, enemy : Vector2f) : Projectile, Vector2f(enemy) {
+class HydrantProjectile(val vel : Float, val max : Float, enemy : Vector2f) : Projectile, Vector2f(enemy) {
 	override val type : ProjectileType = ProjectileType.water
 	override fun updatePosition(dtime : Float, player : Player): Boolean {
 		x += vel * dtime
