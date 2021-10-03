@@ -41,7 +41,7 @@ not instant death?
 - [x] sounds
 - [x] more burning/blending
 - [x] add enemies "rooted" to ground
-- [ ] score
+- [x] score
 - [ ] wall enemy 
 - [ ] menus
 - [ ] dash

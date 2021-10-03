@@ -193,8 +193,8 @@ class PlayerProjectile(player : Player, input : InputHandler, aspectRatio : Floa
 				world.enemies[i].hp -= 0.2f
 				world.enemies[i].playSound(Enemy.damagedSounds.random(), 0.5f, this, 0.2f)
 				if (world.enemies[i].hp < 0) {
+					world.score += world.enemies[i].bounty * world.scoreMultiplier
 					world.enemies.removeAt(i)
-					world.score += 10 * world.scoreMultiplier
 				}
 				return true
 			}

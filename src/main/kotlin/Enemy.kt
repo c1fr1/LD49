@@ -7,6 +7,7 @@ import engine.opengl.bufferObjects.VAO
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
 import org.joml.Vector2f
+import org.joml.Vector2i
 
 abstract class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 
@@ -25,6 +26,8 @@ abstract class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 	}
 
 	abstract fun shootProjectiles(projectileList : ArrayList<Projectile>, playerPos : Orientation2D)
+
+	abstract fun protectsTile(worldPos : Vector2i, tx : Int, ty : Int) : Boolean
 
 	fun playSound(sound : Sound, volume : Float = 1f, player : Vector2f = Vector2f(0f, 0f), pitch : Float = 1f) {
 		sources[sourceIndex].stop()

@@ -123,7 +123,7 @@ class World {
 					row[x] -= degradingFactor / 40f
 				}
 
-				if (enemies.any { getTilePos(it).distance(x, y ) < 2.5 }) {
+				if (enemies.any { it.protectsTile(getTilePos(it), x, y)}) {
 					row[x] = min(row[x] + degradingFactor, 1f)
 				}
 			}
