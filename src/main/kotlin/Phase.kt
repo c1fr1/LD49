@@ -27,8 +27,8 @@ enum class Phase(val numExts : Int, val sprinklers : Int, val avgLength : Int) {
 	}
 
 	companion object {
-		fun random() : Phase {
-			val r = Math.random()
+		fun randomType() : Phase {
+			val r = random()
 			return if (r < 0.3) {
 				ext
 			} else if (r < 0.4) {

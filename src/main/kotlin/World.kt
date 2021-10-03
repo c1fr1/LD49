@@ -33,6 +33,8 @@ class World {
 
 	var rowsInSection = 10
 
+	var currentPhase = Phase.empty
+
 	constructor(rowWidth : Int = 20) {
 		this.rowWidth = rowWidth
 		for (i in 0 until rowsShownBelowCam + requiredRowsAboveCam) {
@@ -175,17 +177,13 @@ class World {
 		})
 		if (spawnEnemies) {
 			rowsInSection--
-			if (rowsInSection = 0)
-		}
-		while (random() < 0.1f && spawnEnemies) {
-			enemies.add(LinearEnemy(getWorldPositionX((random() * rowWidth).toInt()), getWorldPositionY(tiles.size)))
-		}
-		if (random() < 0.05 && spawnEnemies) {
-			enemies.add(HydrantEnemy(getWorldPositionX(0), getWorldPositionY(tiles.size)))
-			enemies.add(HydrantEnemy(getWorldPositionX(rowWidth - 1), getWorldPositionY(tiles.size)))
-		}
-		if (random() < 0.05 && spawnEnemies) {
-			enemies.add(Sprinkler(getWorldPositionX((random() * rowWidth).toInt()), getWorldPositionY(tiles.size)))
+			if (rowsInSection == 0) {
+				currentPhase = Phase.randomType()
+				rowsInSection = currentPhase.getLength()
+				currentPhase.getEnemies(1f + scoreMultiplier / 100f, this) {enemies.add(it)}
+				enemies.add(HydrantEnemy(getWorldPositionX(0), getWorldPositionY(tiles.size)))
+				enemies.add(HydrantEnemy(getWorldPositionX(rowWidth - 1), getWorldPositionY(tiles.size)))
+			}
 		}
 	}
 
