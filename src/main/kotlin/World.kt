@@ -109,7 +109,7 @@ class World {
 		}
 	}
 
-	fun degradeTiles(dtime : Float, player : Vector2fc) {
+	fun degradeTiles(dtime : Float, player : Player) {
 		val degradingFactor = dtime / 2f
 
 		val playerPos = getTilePos(player)
@@ -134,7 +134,9 @@ class World {
 		while (tiles[1].all { it < 0f }) {
 			tiles.pop()
 			++ditchedRows
-			score += scoreMultiplier
+			if (player.hp > 0) {
+				score += scoreMultiplier
+			}
 		}
 
 		while (tiles.size - playerPos.y < requiredRowsAboveCam) addRow(true)

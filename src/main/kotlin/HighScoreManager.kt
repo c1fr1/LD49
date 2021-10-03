@@ -1,3 +1,3 @@
 object HighScoreManager {
-	val highScore = 0
+	var highScore = 0
 }
