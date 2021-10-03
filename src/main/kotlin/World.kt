@@ -113,7 +113,9 @@ class World {
 		var y = 0
 		for (row in tiles) {
 			for (x in row.indices) {
-				if (row[x] < 0) {
+				if (enemies.any { it.protectsTile(getTilePos(it), x, y)}) {
+
+				} else if (row[x] < 0) {
 					row[x] = -0.0001f;
 				} else if (playerPos.x == x && playerPos.y == y) {
 					row[x] -= degradingFactor
@@ -121,10 +123,6 @@ class World {
 					row[x] -= degradingFactor / 2f
 				} else if (y - playerPos.y < 2) {
 					row[x] -= degradingFactor / 40f
-				}
-
-				if (enemies.any { it.protectsTile(getTilePos(it), x, y)}) {
-					row[x] = min(row[x] + degradingFactor, 1f)
 				}
 			}
 			++y
@@ -169,6 +167,10 @@ class World {
 		})
 		while (random() < 0.1f && spawnEnemies) {
 			enemies.add(LinearEnemy(getWorldPositionX((random() * rowWidth).toInt()), getWorldPositionY(tiles.size)))
+		}
+		if (random() < 0.05 && spawnEnemies) {
+			enemies.add(HydrantEnemy(getWorldPositionX(0), getWorldPositionY(tiles.size)))
+			enemies.add(HydrantEnemy(getWorldPositionX(rowWidth - 1), getWorldPositionY(tiles.size)))
 		}
 	}
 
