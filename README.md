@@ -28,6 +28,17 @@ not instant death?
 - render normal -1..1 VAO instanced
 - fragment shader does magic
 
+## Menus
+
+### views
+- main menu
+- tutorial
+
+### buttons
+- play
+- tutorial
+- quit
+
 ## TODO
 
 - [x] render/store tiles in a queue
@@ -42,7 +53,7 @@ not instant death?
 - [x] more burning/blending
 - [x] add enemies "rooted" to ground
 - [x] score
-- [ ] wall enemy 
+- [x] wall enemy 
 - [ ] menus
 - [ ] dash
 - [ ] more enemies
