@@ -90,21 +90,43 @@ class GameView(w : EnigWindow) : EnigView() {
 		textShader.enable()
 		world.tileVAO.prepareRender()
 
-		lateinit var texMats : Array<Matrix4f>
-		lateinit var worldMats : Array<Matrix4f>
-		font.getMats("${world.score}", player.projectionMatrix.translate(-aspect * 50f + 4f, 40f, 0f, Matrix4f()).scale(10f, Matrix4f())) {wm, tm ->
-			worldMats = wm
-			texMats = tm
+		lateinit var texMats: Array<Matrix4f>
+		lateinit var worldMats: Array<Matrix4f>
+		if (player.hp >= 0f) {
+			font.getMats(
+				"${world.score}",
+				player.projectionMatrix.translate(-aspect * 50f + 4f, 40f, 0f, Matrix4f()).scale(10f, Matrix4f())
+			) { wm, tm ->
+				worldMats = wm
+				texMats = tm
+			}
+			font.bind()
+			textShader[ShaderType.FRAGMENT_SHADER, 0] = Vector3f(1f, 1f, 1f);
+			for (i in texMats.indices) {
+				textShader[ShaderType.VERTEX_SHADER, 0] = worldMats[i]
+				textShader[ShaderType.VERTEX_SHADER, 1] = texMats[i]
+				world.tileVAO.fullRender()
+			}
+			world.tileVAO.unbind()
+		} else {
+			val text = "Game Over, final score is ${world.score}"
+			val width = text.sumOf { font.charData[it.code - 32].xadvance().toDouble() }
+			font.getMats(
+				text,
+				player.projectionMatrix.translate(-aspect * 50f + 4f, 40f, 0f, Matrix4f()).scale(10f, Matrix4f())
+			) { wm, tm ->
+				worldMats = wm
+				texMats = tm
+			}
+			font.bind()
+			textShader[ShaderType.FRAGMENT_SHADER, 0] = Vector3f(1f, 1f, 1f);
+			for (i in texMats.indices) {
+				textShader[ShaderType.VERTEX_SHADER, 0] = worldMats[i]
+				textShader[ShaderType.VERTEX_SHADER, 1] = texMats[i]
+				world.tileVAO.fullRender()
+			}
+			world.tileVAO.unbind()
 		}
-		font.bind()
-		textShader[ShaderType.FRAGMENT_SHADER, 0] = Vector3f(1f, 1f, 1f);
-		for (i in texMats.indices) {
-			textShader[ShaderType.VERTEX_SHADER, 0] = worldMats[i]
-			textShader[ShaderType.VERTEX_SHADER, 1] = texMats[i]
-			world.tileVAO.fullRender()
-		}
-		world.tileVAO.unbind()
-
 	}
 
 	fun renderHPBar() {
@@ -120,5 +142,6 @@ class GameView(w : EnigWindow) : EnigView() {
 		player.hp = 1f
 		player.x = 0f
 		player.y = 0f
+		world.reset()
 	}
 }
