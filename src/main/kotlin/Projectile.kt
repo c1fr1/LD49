@@ -10,21 +10,26 @@ interface Projectile : Vector2fc {
 }
 
 enum class ProjectileType {
-	player, water;
+	player,
+	water,
+	spray;
 
 	fun getTexture() : Texture {
 		return when (this) {
 			player -> playerProjTex
 			water -> waterTex
+			spray -> sprayTex
 		}
 	}
 
 	companion object {
 		private lateinit var waterTex : Texture
 		private lateinit var playerProjTex : Texture
+		private lateinit var sprayTex : Texture
 		fun generateResources() {
 			waterTex = Texture("projectile.png")
 			playerProjTex = Texture("playerShot.png")
+			sprayTex = Texture("sprinkle.png")
 		}
 	}
 }
