@@ -1,6 +1,7 @@
 import enemies.Enemy
 import enemies.HydrantEnemy
 import enemies.LinearEnemy
+import enemies.Sprinkler
 import engine.entities.Camera2D
 import engine.opengl.Texture
 import engine.opengl.bufferObjects.VAO
@@ -176,6 +177,9 @@ class World {
 		if (random() < 0.05 && spawnEnemies) {
 			enemies.add(HydrantEnemy(getWorldPositionX(0), getWorldPositionY(tiles.size)))
 			enemies.add(HydrantEnemy(getWorldPositionX(rowWidth - 1), getWorldPositionY(tiles.size)))
+		}
+		if (random() < 0.03 && spawnEnemies) {
+			enemies.add(Sprinkler(getWorldPositionX((random() * rowWidth).toInt()), getWorldPositionY(tiles.size)))
 		}
 	}
 

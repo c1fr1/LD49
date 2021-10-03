@@ -47,9 +47,11 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 	companion object {
 		lateinit var extinguisherTex : Texture
 		lateinit var hydrantTex : Texture
+		lateinit var sprinklerTex : Texture
 		lateinit var sources : Array<SoundSource>
 		lateinit var attackSounds : Array<Sound>
 		lateinit var damagedSounds : Array<Sound>
+		lateinit var sprinklerSounds : Array<Sound>
 
 		var sourceIndex = 0
 
@@ -60,6 +62,7 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 				when (enemy) {
 					is HydrantEnemy -> hydrantTex.bind()
 					is LinearEnemy -> extinguisherTex.bind()
+					is Sprinkler -> sprinklerTex.bind()
 				}
 				shader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix().translate(enemy.x, enemy.y, 0f).scale(2f).rotateZ(enemy.rotation + PIf / 2f)
 				square.drawTriangles()
@@ -70,9 +73,11 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 		fun generateResources() {
 			extinguisherTex = Texture("fire extinguisher.png")
 			hydrantTex = Texture("fire hydrant.png")
+			sprinklerTex = Texture("sprinkler.png")
 			sources = Array(20) { SoundSource(0f, 0f, 0f) }
 			attackSounds = Array(4) {Sound("sounds/ext$it.wav")}
 			damagedSounds = Array(3) {Sound("sounds/hit$it.wav")}
+			sprinklerSounds = Array(3) {Sound("sounds/sprinkler/sprinkler$it.wav")}
 		}
 	}
 }
