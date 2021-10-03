@@ -55,9 +55,15 @@ float realStrength() {
 		downFactor * neighborStrengths.w;
 }
 
+float rand(vec2 co){
+	return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
 void main() {
-	vec2 texid = vec2(mod(101 * pos.x, 8), mod(101 * pos.y, 8));
+	vec2 texid = floor(8 * vec2(rand(pos), rand(pos * 100)));
 	color = texture(texSampler, (tc + texid) / 8);
+	color.g = (color.r + color.b) / 2;
+
 	vec2 realPos = calcRealPos();
 
 	float realStr = realStrength();
