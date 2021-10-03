@@ -68,7 +68,7 @@ class Main(w : EnigWindow) : EnigView() {
 
 		lateinit var texMats : Array<Matrix4f>
 		lateinit var worldMats : Array<Matrix4f>
-		font.getMats("HELLO WORLD", player.getMatrix().scale(10f)) {wm, tm ->
+		font.getMats("0123456789", player.projectionMatrix.translate(-aspect * 50f + 4f, 40f, 0f, Matrix4f()).scale(10f, Matrix4f())) {wm, tm ->
 			worldMats = wm
 			texMats = tm
 		}
