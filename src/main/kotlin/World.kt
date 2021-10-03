@@ -31,7 +31,7 @@ class World {
 	lateinit var tileVAO : VAO
 	lateinit var tileTexture : Texture
 
-	var rowsInSection = 10
+	var rowsInSection = 1
 
 	var currentPhase = Phase.empty
 
@@ -177,7 +177,7 @@ class World {
 		})
 		if (spawnEnemies) {
 			rowsInSection--
-			if (rowsInSection == 0) {
+			if (rowsInSection <= 0) {
 				currentPhase = Phase.randomType()
 				rowsInSection = currentPhase.getLength()
 				currentPhase.getEnemies(1f + scoreMultiplier / 100f, this) {enemies.add(it)}

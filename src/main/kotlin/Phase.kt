@@ -1,9 +1,10 @@
 import enemies.Enemy
 import enemies.LinearEnemy
+import enemies.Sprayer
 import enemies.Sprinkler
 import org.joml.Math.random
 
-enum class Phase(val numExts : Int, val sprinklers : Int, sprayers, val avgLength : Int) {
+enum class Phase(val numExts : Int, val sprinklers : Int, sprayers : Int, val avgLength : Int) {
 	ext(4, 0, 0, 20),
 	sprinkle(0, 2, 0, 20),
 	extSprinkle(2, 1, 0, 30),
@@ -27,19 +28,28 @@ enum class Phase(val numExts : Int, val sprinklers : Int, sprayers, val avgLengt
 			val y = world.getWorldPositionY((random() * world.rowsInSection).toInt() + world.tiles.size)
 			addFunction(Sprinkler(x, y))
 		}
+		for (x in 0 until ((sprinklers + random() / 2f) * difficulty).toInt()) {
+			val x = world.getWorldPositionX((random() * world.rowWidth).toInt())
+			val y = world.getWorldPositionY((random() * world.rowsInSection).toInt() + world.tiles.size)
+			addFunction(Sprayer(x, y))
+		}
 	}
 
 	companion object {
 		fun randomType() : Phase {
-			val r = random() * 13
-			return if (r <2) {
+			val r = random() * 11
+			return if (r < 2) {
 				ext
-			} else if (r < 0.4) {
-				empty
-			} else if (r < 0.7) {
+			} else if (r < 4) {
 				sprinkle
-			} else {
+			} else if (r < 6) {
 				extSprinkle
+			} else if (r < 8) {
+				sprinkleSpray
+			} else if (r < 10) {
+				extSpray
+			} else {
+				empty
 			}
 		}
 	}

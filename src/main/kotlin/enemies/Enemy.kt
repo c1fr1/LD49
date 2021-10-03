@@ -48,6 +48,7 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 		lateinit var extinguisherTex : Texture
 		lateinit var hydrantTex : Texture
 		lateinit var sprinklerTex : Texture
+		lateinit var sprayerTex : Texture
 		lateinit var sources : Array<SoundSource>
 		lateinit var attackSounds : Array<Sound>
 		lateinit var damagedSounds : Array<Sound>
@@ -74,6 +75,7 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 			extinguisherTex = Texture("fire extinguisher.png")
 			hydrantTex = Texture("fire hydrant.png")
 			sprinklerTex = Texture("sprinkler.png")
+			sprayerTex = Texture("sprayer.png")
 			sources = Array(20) { SoundSource(0f, 0f, 0f) }
 			attackSounds = Array(4) {Sound("sounds/ext$it.wav")}
 			damagedSounds = Array(3) {Sound("sounds/hit$it.wav")}
