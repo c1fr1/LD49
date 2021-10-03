@@ -38,6 +38,7 @@ class GameView(w : EnigWindow) : EnigView() {
 		font = Font(Paths.get({}.javaClass.classLoader.getResource("Inkfree.ttf")!!.toURI()), 128f, 1024, 512)
 		world.generateResources()
 		player.generateResources()
+		reset()
 	}
 
 	override fun loop(frameBirth : Long, dtime : Float) : Boolean {
@@ -113,5 +114,11 @@ class GameView(w : EnigWindow) : EnigView() {
 		hpShader[ShaderType.FRAGMENT_SHADER, 0] = player.hp
 		squareVAO.drawTriangles()
 		squareVAO.unbind()
+	}
+
+	fun reset() {
+		player.hp = 1f
+		player.x = 0f
+		player.y = 0f
 	}
 }

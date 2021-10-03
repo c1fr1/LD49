@@ -177,4 +177,15 @@ class World {
 		}
 	}
 
+	fun reset() {
+		ditchedRows = 0
+		tiles.clear()
+		projectiles.clear()
+		enemies.clear()
+		score = 0
+		for (i in 0 until rowsShownBelowCam + requiredRowsAboveCam) {
+			addRow()
+		}
+	}
+
 }

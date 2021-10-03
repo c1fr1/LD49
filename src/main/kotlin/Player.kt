@@ -79,17 +79,21 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 		val recoverySpeed = dtime * 0.25f
 
-		if (!world.boundsCheck(this) || world[this] < 0f) {
+		if (!world.boundsCheck(this) || world[this] < 0f && hp > 0f) {
 			hp -= recoverySpeed * 2f
 		} else {
 			hp = min(hp + recoverySpeed, 1f)
 		}
 
-		fireSource.setVolume(clamp(hp, 0f, 1f) / 3f + 0.5f)
-		fireSource.setPitch(1.5f - clamp(hp, 0f, 1f) / 2f)
+		if (hp > 0f) {
+			fireSource.setVolume(clamp(hp, 0f, 1f) / 3f + 0.5f)
+			fireSource.setPitch(1.5f - clamp(hp, 0f, 1f) / 2f)
+		} else {
+			fireSource.setVolume(0f)
+		}
 
 		shotCD -= dtime
-		if (input.mouseButtons[GLFW_MOUSE_BUTTON_LEFT].isDown && shotCD < 0) {
+		if (input.mouseButtons[GLFW_MOUSE_BUTTON_LEFT].isDown && shotCD < 0 && hp > 0f) {
 			attack(input, aspectRatio)
 		}
 
