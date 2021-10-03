@@ -3,8 +3,7 @@ import engine.opengl.Texture
 import engine.opengl.bufferObjects.VAO
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
-import org.joml.Math.floor
-import org.joml.Math.random
+import org.joml.Math.*
 import org.joml.Vector2f
 import org.joml.Vector2fc
 import org.joml.Vector2i
@@ -119,7 +118,6 @@ class World {
 		}
 
 		while (tiles.size - playerPos.y < requiredRowsAboveCam) addRow(true)
-		println("${tiles.size} tiles, ${playerPos.y}")
 	}
 
 	fun getTileX(x : Float) = floor(x / 5f + (rowWidth / 2)).toInt()
@@ -147,9 +145,11 @@ class World {
 	fun getWorldPositionY(y : Int) = 5f * (y.toFloat() + 0.5f + ditchedRows - rowsShownBelowCam)
 
 	private fun addRow(spawnEnemies : Boolean = false) {
-		tiles.add(Array(rowWidth) {(Math.random().toFloat() + 4f) / 5f})
+		tiles.add(Array(rowWidth) {it ->
+			(Math.random().toFloat() + 4f) / 5f - abs(it - (rowWidth / 2)).toFloat() / (rowWidth.toFloat() * 5)
+		})
 		while (random() < 0.1f && spawnEnemies) {
-			enemies.add(LinearEnemy(getWorldPositionX((random() * rowWidth).toInt()), getWorldPositionY(ditchedRows + tiles.size)))
+			enemies.add(LinearEnemy(getWorldPositionX((random() * rowWidth).toInt()), getWorldPositionY(tiles.size)))
 		}
 	}
 
