@@ -145,8 +145,8 @@ class World {
 	fun getWorldPositionY(y : Int) = 5f * (y.toFloat() + 0.5f + ditchedRows - rowsShownBelowCam)
 
 	private fun addRow(spawnEnemies : Boolean = false) {
-		tiles.add(Array(rowWidth) {it ->
-			(Math.random().toFloat() + 4f) / 5f - abs(it - (rowWidth / 2)).toFloat() / (rowWidth.toFloat() * 5)
+		tiles.add(Array(rowWidth) {
+			(Math.random().toFloat() + 5f) / 6f - abs(it - (rowWidth / 2)).toFloat() / (rowWidth.toFloat() * 5)
 		})
 		while (random() < 0.1f && spawnEnemies) {
 			enemies.add(LinearEnemy(getWorldPositionX((random() * rowWidth).toInt()), getWorldPositionY(tiles.size)))
