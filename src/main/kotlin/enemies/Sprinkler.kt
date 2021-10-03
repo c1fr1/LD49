@@ -27,7 +27,7 @@ class Sprinkler(x : Float, y : Float) : Enemy(x, y) {
 		if (distance(playerPos) > 50f) {
 			return
 		}
-		playSound(sprinklerSounds.random(), 1f, Vector2f(0f, 0f), 1f + random().toFloat() / 10f)
+		playSound(sprinklerSounds.random(), 0.85f, Vector2f(0f, 0f), 1f + random().toFloat() / 10f)
 
 		val del = playerPos - this
 		val targRotation = atan2(del.y, del.x)
@@ -51,7 +51,7 @@ class Sprinkler(x : Float, y : Float) : Enemy(x, y) {
 		}
 
 		projectileList.add(SprinklerProjectile(this))
-		attackTimer = 0.1f
+		attackTimer = 0.15f
 	}
 
 	override fun protectsTile(worldPos : Vector2i, tx : Int, ty : Int) = worldPos.distance(tx, ty) < 2.5f
@@ -68,7 +68,7 @@ class SprinklerProjectile(enemy : Vector2f, rotation : Float, val speed : Float 
 		x += cos(rotation) * distance
 		y += sin(rotation) * distance
 		if (distance(player) < 2f) {
-			player.hp -= 0.3f
+			player.hp -= 0.2f
 			player.landHit()
 			return true
 		}
