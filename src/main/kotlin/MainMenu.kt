@@ -21,7 +21,9 @@ class MainMenu(w : EnigWindow) : EnigView() {
 
 	var nextView = 0
 
-	val playButton = Button(3f, "PLAY")
+	val playButton = Button(0.5f, 2.3f, "PLAY")
+	val tutorialButton = Button(0.2f, 2.3f, "TUTORIAL")
+	val quitButton = Button(-0.1f, 2.75f, "QUIT")
 
 	lateinit var buttonShader : ShaderProgram
 	lateinit var textShader : ShaderProgram
@@ -43,27 +45,33 @@ class MainMenu(w : EnigWindow) : EnigView() {
 		vao = VAO(0f, 0f, 1f, 1f)
 	}
 
-	var buttonStrength = 0.9f
-
 	override fun loop(frameBirth: Long, dtime: Float): Boolean {
 		FBO.prepareDefaultRender()
 
-		playButton.updateStrength(window.inputHandler, dtime)
+		playButton.updateStrength(window, dtime)
+		tutorialButton.updateStrength(window, dtime)
+		quitButton.updateStrength(window, dtime)
 
-		renderButtonBackground(playButton)
-		renderButtonText(playButton)
+		renderButton(playButton)
+		renderButton(tutorialButton)
+		renderButton(quitButton)
 
 		time += dtime
 		nextView = -1
 		return window.inputHandler.keys[GLFW_KEY_ESCAPE] == KeyState.Released
 	}
 
+	fun renderButton(button : Button) {
+		renderButtonBackground(button)
+		renderButtonText(button)
+	}
+
 	fun renderButtonBackground(button : Button) {
 		buttonShader.enable()
 		woodTex.bind()
 		buttonShader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix()
-			.translate(0.1f-window.aspectRatio, 0f, 0f)
-			.scale(button.width  * 0.2f, 0.2f, 1f)
+			.translate(0.1f-window.aspectRatio, button.y, 0f)
+			.scale(button.width * 0.2f, 0.2f, 1f)
 		buttonShader[ShaderType.FRAGMENT_SHADER, 0] = button.strength
 		buttonShader[ShaderType.FRAGMENT_SHADER, 1] = time * 2
 		buttonShader[ShaderType.FRAGMENT_SHADER, 2] = button.width
@@ -75,7 +83,7 @@ class MainMenu(w : EnigWindow) : EnigView() {
 		vao.prepareRender()
 		font.bind()
 		font.getMats(button.text, cam.getMatrix()
-			.translate(0.15f - window.aspectRatio, 0.05f, 0f)
+			.translate(0.15f - window.aspectRatio, button.y + 0.05f, 0f)
 			.scale(0.2f)) {wm, tm ->
 			for (i in wm.indices) {
 				textShader[ShaderType.VERTEX_SHADER, 0] = wm[i]
@@ -88,14 +96,20 @@ class MainMenu(w : EnigWindow) : EnigView() {
 	}
 }
 
-class Button(val width : Float, val text : String) {
+class Button(val y : Float, val width : Float, val text : String) {
 	var strength = 0.93f
 
-	fun updateStrength(input : InputHandler, dtime : Float) {
-		if (input.glCursorX > 0f) {
+	fun updateStrength(window : EnigWindow, dtime : Float) {
+		if (hovering(window)) {
 			strength = max(strength - dtime / 2f, 0.8f)
 		} else {
 			strength = min(strength + dtime / 2f, 0.93f)
 		}
+	}
+
+	fun hovering(window : EnigWindow) : Boolean {
+		val xRange = (0.1f - window.aspectRatio)..(0.1f - window.aspectRatio + width / 5f)
+		val yRange = y..(y + 0.2f)
+		return window.inputHandler.glCursorX * window.aspectRatio in xRange && -window.inputHandler.glCursorY in yRange
 	}
 }
