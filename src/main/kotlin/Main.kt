@@ -28,6 +28,7 @@ class Main(w : EnigWindow) : EnigView() {
 	lateinit var squareVAO : VAO
 	lateinit var hpShader : ShaderProgram
 	lateinit var texShader : ShaderProgram
+	lateinit var font : Font
 
 	override fun generateResources(window: EnigWindow) {
 		super.generateResources(window)

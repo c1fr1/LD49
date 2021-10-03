@@ -40,7 +40,7 @@ not instant death?
 - [x] add fraction of player vel to particle velocities
 - [x] sounds
 - [x] more burning/blending
-- [ ] add enemies "rooted" to ground
+- [x] add enemies "rooted" to ground
 - [ ] score
 - [ ] wall enemy 
 - [ ] menus
