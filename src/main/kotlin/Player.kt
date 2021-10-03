@@ -71,8 +71,10 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		if (delta.lengthSquared() > 0.5f) {
 			delta.normalize(speed)
 		}
-		x += delta.x
-		y += delta.y
+		if (hp > 0) {
+			x += delta.x
+			y += delta.y
+		}
 		generateParticles(dtime, time, delta)
 
 		val recoverySpeed = dtime * 0.25f
@@ -114,6 +116,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		compShader[1] = dtime
 		compShader[2] = time
 		compShader[3] = speed
+		compShader[4] = hp
 		posSSBO.bindToPosition(0)
 		velSSBO.bindToPosition(1)
 		sizeSSBO.bindToPosition(2)

@@ -43,7 +43,6 @@ class GameView(w : EnigWindow) : EnigView() {
 	override fun loop(frameBirth : Long, dtime : Float) : Boolean {
 		FBO.prepareDefaultRender()
 
-
 		player.updatePlayerPosition(dtime, input, world, aspect, world.time)
 		world.update(dtime, player)
 		tutorialManager.manage(world, player, dtime)
@@ -56,7 +55,7 @@ class GameView(w : EnigWindow) : EnigView() {
 			renderTutorialText()
 		}
 
-		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Pressed
+		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Released
 	}
 
 	fun renderTutorialText() {
