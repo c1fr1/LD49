@@ -16,7 +16,7 @@ vec3 emberSlide(float val) {
 }
 
 void main() {
-	color = texture(texSampler, (tc + texid) / 8);
+	color = texture(texSampler, tc);
 	color.g = (color.r + color.b) / 2;
 
 	float noise = gnoise(vec4(2 * pos.x * aspect, 2 * pos.y, time / 15, 0)) / 2 + 0.5;
