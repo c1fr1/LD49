@@ -8,7 +8,6 @@ uniform float strength;
 uniform vec2 pos;
 uniform float time;
 uniform vec4 neighborStrengths;
-uniform vec4 cornerStrengths;
 
 uniform sampler2D texSampler;
 
