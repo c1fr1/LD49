@@ -3,10 +3,9 @@ import engine.opengl.Texture
 import engine.opengl.bufferObjects.VAO
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
+import org.joml.*
 import org.joml.Math.*
-import org.joml.Vector2f
-import org.joml.Vector2fc
-import org.joml.Vector2i
+import java.lang.Math
 import java.util.*
 
 class World {
@@ -56,15 +55,24 @@ class World {
 		tileShader.enable()
 		tileVAO.prepareRender()
 		tileTexture.bind()
+		var prevRow : Array<Float>? = null
 		var y = ditchedRows - rowsShownBelowCam
 		for (row in tiles) {
 			for (x in row.indices) {
 				tileShader[ShaderType.FRAGMENT_SHADER, 0] = row[x]
 				tileShader[ShaderType.FRAGMENT_SHADER, 1] = Vector2f(x.toFloat(), y.toFloat())
 				tileShader[ShaderType.FRAGMENT_SHADER, 2] = time
+				tileShader[ShaderType.FRAGMENT_SHADER, 3] =
+					Vector4f(
+						if (x > 0) row[x - 1] else 0f,
+						if (x + 1 < rowWidth) row[x + 1] else 0f,
+						if (y - ditchedRows + rowsShownBelowCam + 1 < tiles.size) tiles[y - ditchedRows + rowsShownBelowCam + 1][x] else 1f,
+						prevRow?.get(x) ?: 0f
+					)
 				tileShader[ShaderType.VERTEX_SHADER, 0] = camera.getMatrix().scale(5f).translate((x - rowWidth / 2).toFloat(), y.toFloat(), 0f)
 				tileVAO.drawTriangles()
 			}
+			prevRow = row
 			++y
 		}
 		tileVAO.unbind()
