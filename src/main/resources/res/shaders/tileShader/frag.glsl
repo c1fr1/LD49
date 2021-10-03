@@ -64,7 +64,7 @@ void main() {
 	if (noise > realStr) {
 		color.w = 0;
 	}
-	vec3 emberColor = emberSlide((realStr - noise) * 10);
+	vec3 emberColor = emberSlide((realStr - noise) * 8);
 	float emberFactor = 1 - clamp(7 * (realStr - noise), 0, 1);
 	color.xyz = mix(color.xyz, emberColor, emberFactor);
 }

@@ -39,9 +39,12 @@ not instant death?
 - [x] enemy spawning
 - [x] add fraction of player vel to particle velocities
 - [x] sounds
-- [ ] more burning/blending
+- [x] more burning/blending
 - [ ] add enemies "rooted" to ground
+- [ ] score
+- [ ] menus
 - [ ] dash
+- [ ] more enemies
 - [ ] fix relative sounds?
 - [ ] ???
 - [ ] win jam
