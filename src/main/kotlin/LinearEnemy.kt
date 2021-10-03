@@ -2,6 +2,7 @@ import engine.PIf
 import engine.entities.Orientation2D
 import engine.opengl.jomlExtensions.minus
 import org.joml.Matrix4f
+import org.joml.Vector2f
 import org.joml.Vector2i
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -23,7 +24,8 @@ class LinearEnemy(x : Float, y : Float) : Enemy(x, y) {
 	}
 }
 
-class LinearProjectile(enemy : LinearEnemy, val speed : Float = 40f) : Projectile, Orientation2D(enemy.rotation, enemy) {
+class LinearProjectile(enemy : Vector2f, rotation : Float, val speed : Float = 40f) : Projectile, Orientation2D(rotation, enemy) {
+	constructor(enemy : Orientation2D, speed : Float = 40f) : this(enemy, enemy.rotation, speed)
 	override val type : ProjectileType = ProjectileType.water
 	override fun updatePosition(dtime : Float, player : Player) : Boolean {
 		val distance = dtime * speed
