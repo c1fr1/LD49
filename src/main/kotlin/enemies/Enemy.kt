@@ -64,6 +64,7 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 					is HydrantEnemy -> hydrantTex.bind()
 					is LinearEnemy -> extinguisherTex.bind()
 					is Sprinkler -> sprinklerTex.bind()
+					is Sprayer -> sprayerTex
 				}
 				shader[ShaderType.VERTEX_SHADER, 0] = cam.getMatrix().translate(enemy.x, enemy.y, 0f).scale(2f).rotateZ(enemy.rotation + PIf / 2f)
 				square.drawTriangles()
