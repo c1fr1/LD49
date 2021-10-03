@@ -1,10 +1,9 @@
 import enemies.HydrantEnemy
 import enemies.LinearEnemy
-import enemies.HydrantProjectile
 import org.joml.Math.random
 
 class TutorialManager {
-	var step = 0
+	var step = -1
 	var texts = arrayOf(
 		arrayOf("WASD to move, left click to shoot"),
 		arrayOf("tiles burn when you stand of them", "you will rapidly loose health when not standing on a tile", "enemies protect the tiles around them"),

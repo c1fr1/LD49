@@ -25,6 +25,8 @@ class GameView(w : EnigWindow) : EnigView() {
 	lateinit var textShader : ShaderProgram
 	lateinit var font : Font
 
+	val tutorialManager = TutorialManager()
+
 	override fun generateResources(window: EnigWindow) {
 		super.generateResources(window)
 
@@ -44,6 +46,7 @@ class GameView(w : EnigWindow) : EnigView() {
 
 		player.updatePlayerPosition(dtime, input, world, aspect, world.time)
 		world.update(dtime, player)
+		tutorialManager.manage(world, player, dtime)
 
 		world.render(player, squareVAO, texShader)
 		player.render(squareVAO, texShader)
@@ -51,6 +54,10 @@ class GameView(w : EnigWindow) : EnigView() {
 		renderScore()
 
 		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Pressed
+	}
+
+	fun renderTutorialText() {
+
 	}
 
 	fun renderScore() {
@@ -69,11 +76,8 @@ class GameView(w : EnigWindow) : EnigView() {
 		for (i in texMats.indices) {
 			textShader[ShaderType.VERTEX_SHADER, 0] = worldMats[i]
 			textShader[ShaderType.VERTEX_SHADER, 1] = texMats[i]
-			checkGLError()
 			world.tileVAO.fullRender()
-			checkGLError()
 		}
-		checkGLError()
 		world.tileVAO.unbind()
 
 	}

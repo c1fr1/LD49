@@ -10,8 +10,14 @@ fun main() {
 	val gameView = GameView(window)
 	while (view.nextView != -1) {
 		view.runInGLSafe(window)
+		window.inputHandler.update()
 		if (view.nextView == 1) {
 			gameView.runInGLSafe(window)
+			window.inputHandler.update()
+		} else if (view.nextView == 2) {
+			gameView.tutorialManager.step = 0
+			gameView.runInGLSafe(window)
+			window.inputHandler.update()
 		}
 	}
 
