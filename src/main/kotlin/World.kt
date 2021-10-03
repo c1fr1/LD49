@@ -109,13 +109,16 @@ class World {
 		var y = 0
 		for (row in tiles) {
 			for (x in row.indices) {
-				if (playerPos.x == x && playerPos.y == y) {
+				if (row[x] < 0) {
+					row[x] = 0f;
+				} else if (playerPos.x == x && playerPos.y == y) {
 					row[x] -= degradingFactor
 				} else if (row[x] < 0.85 || (playerPos.distance(x, y) > 10f && y < playerPos.y)) {
 					row[x] -= degradingFactor / 2f
 				} else if (y - playerPos.y < 2) {
 					row[x] -= degradingFactor / 40f
 				}
+
 			}
 			++y
 		}

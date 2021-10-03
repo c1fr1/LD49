@@ -23,11 +23,31 @@ vec2 calcRealPos() {
 }
 
 float realStrength() {
-	float leftFactor = clamp((1 - tc.x * 4), 0, 1) / 2;
-	float rightFactor = clamp(tc.x * 4 - 3, 0, 1) / 2;
-	float upFactor = 0;
-	float downFactor = 0;
-	float centerFactor = 1 - leftFactor + rightFactor + upFactor + downFactor;
+	float leftFactor = clamp((1 - tc.x * 5), 0, 1) / 2;
+	float rightFactor = clamp(tc.x * 5 - 4, 0, 1) / 2;
+	float upFactor =  clamp((1 - tc.y * 5), 0, 1) / 2;
+	float downFactor = clamp(tc.y * 5 - 4, 0, 1) / 2;
+	if (leftFactor > upFactor) {
+		upFactor = 0;
+	} else {
+		leftFactor = 0;
+	}
+	if (upFactor > rightFactor) {
+		rightFactor = 0;
+	} else {
+		upFactor = 0;
+	}
+	if (rightFactor > downFactor) {
+		downFactor = 0;
+	} else {
+		rightFactor = 0;
+	}
+	if (downFactor > leftFactor) {
+		leftFactor = 0;
+	} else {
+		downFactor = 0;
+	}
+	float centerFactor = 1 - leftFactor - rightFactor - upFactor - downFactor;
 	return centerFactor * strength +
 		leftFactor * neighborStrengths.x +
 		rightFactor * neighborStrengths.y +
