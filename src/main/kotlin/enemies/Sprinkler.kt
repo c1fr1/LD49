@@ -1,10 +1,13 @@
 package enemies
 
 import Projectile
+import engine.PIf
+import engine.TAUf
 import engine.compareAngles
 import engine.entities.Orientation2D
 import engine.opengl.jomlExtensions.minus
 import engine.printMatrix
+import org.joml.Math.abs
 import org.joml.Math.random
 import org.joml.Vector2f
 import org.joml.Vector2i
@@ -20,7 +23,13 @@ class Sprinkler(x : Float, y : Float) : Enemy(x, y) {
 
 		val del = playerPos - this
 		val targRotation = atan2(del.y, del.x)
-		if (compareAngles(targRotation, rotation) > 0) {
+		while (abs(rotation - targRotation) > PIf && rotation > targRotation) {
+			rotation -= TAUf
+		}
+		while (abs(rotation - targRotation) > PIf && rotation < targRotation) {
+			rotation += TAUf
+		}
+		if (rotation < targRotation) {
 			rotation += 0.1f + random().toFloat() / 75f
 		} else {
 			rotation -= 0.1f + random().toFloat() / 75f

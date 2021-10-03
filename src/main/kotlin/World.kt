@@ -178,7 +178,7 @@ class World {
 			enemies.add(HydrantEnemy(getWorldPositionX(0), getWorldPositionY(tiles.size)))
 			enemies.add(HydrantEnemy(getWorldPositionX(rowWidth - 1), getWorldPositionY(tiles.size)))
 		}
-		if (random() < 0.03 && spawnEnemies) {
+		if (random() < 0.05 && spawnEnemies) {
 			enemies.add(Sprinkler(getWorldPositionX((random() * rowWidth).toInt()), getWorldPositionY(tiles.size)))
 		}
 	}
