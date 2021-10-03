@@ -1,10 +1,13 @@
 import engine.EnigView
+import engine.getResource
 import engine.opengl.*
 import engine.opengl.bufferObjects.*
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
 import org.joml.Matrix4f
 import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
+import java.nio.file.Path
+import java.nio.file.Paths
 
 fun main() {
 	EnigContext.init()
@@ -28,6 +31,7 @@ class Main(w : EnigWindow) : EnigView() {
 	lateinit var squareVAO : VAO
 	lateinit var hpShader : ShaderProgram
 	lateinit var texShader : ShaderProgram
+	lateinit var textShader : ShaderProgram
 	lateinit var font : Font
 
 	override fun generateResources(window: EnigWindow) {
@@ -37,6 +41,8 @@ class Main(w : EnigWindow) : EnigView() {
 		hpShader = ShaderProgram("hpShader")
 		texShader = ShaderProgram("textureShader")
 
+
+		font = Font(Paths.get({}.javaClass.classLoader.getResource("Inkfree.ttf")!!.toURI()), 64f, 1024, 500)
 		world.generateResources()
 		player.generateResources()
 	}
@@ -53,6 +59,20 @@ class Main(w : EnigWindow) : EnigView() {
 		renderHPBar()
 
 		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Pressed
+	}
+
+	fun renderScore() {
+		world.tileVAO.prepareRender()
+
+		lateinit var texMat : Array<Matrix4f>
+		lateinit var worldMat : Array<Matrix4f>
+		val mats = font.getMats("", player.getMatrix()) {
+			worldMat = worldMats
+		}
+
+
+		world.tileVAO.unbind()
+
 	}
 
 	fun renderHPBar() {
