@@ -5,6 +5,7 @@ import engine.opengl.bufferObjects.*
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
 import org.joml.Matrix4f
+import org.joml.Vector3f
 import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -74,6 +75,7 @@ class Main(w : EnigWindow) : EnigView() {
 		}
 		font.bind()
 		checkGLError()
+		textShader[ShaderType.FRAGMENT_SHADER, 0] = Vector3f(1f, 1f, 1f);
 		for (i in texMats.indices) {
 			textShader[ShaderType.VERTEX_SHADER, 0] = worldMats[i]
 			textShader[ShaderType.VERTEX_SHADER, 1] = texMats[i]
