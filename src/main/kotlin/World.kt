@@ -31,6 +31,8 @@ class World {
 	lateinit var tileVAO : VAO
 	lateinit var tileTexture : Texture
 
+	var rowsInSection = 10
+
 	constructor(rowWidth : Int = 20) {
 		this.rowWidth = rowWidth
 		for (i in 0 until rowsShownBelowCam + requiredRowsAboveCam) {
@@ -171,6 +173,10 @@ class World {
 		tiles.add(Array(rowWidth) {
 			(Math.random().toFloat() + 5f) / 6f - abs(it - (rowWidth / 2)).toFloat() / (rowWidth.toFloat() * 5)
 		})
+		if (spawnEnemies) {
+			rowsInSection--
+			if (rowsInSection = 0)
+		}
 		while (random() < 0.1f && spawnEnemies) {
 			enemies.add(LinearEnemy(getWorldPositionX((random() * rowWidth).toInt()), getWorldPositionY(tiles.size)))
 		}
