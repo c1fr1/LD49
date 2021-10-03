@@ -91,7 +91,7 @@ class World {
 
 	fun updateEnemies(dtime : Float, player : Player) {
 		for (enemy in enemies) {
-			enemy.update(dtime, projectiles, player)
+			enemy.update(dtime, this, player)
 		}
 	}
 

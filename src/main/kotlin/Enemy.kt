@@ -17,10 +17,10 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 
 	abstract val bounty : Int
 
-	fun update(dtime : Float, projectileList : ArrayList<Projectile>, playerPos : Orientation2D) {
+	open fun update(dtime : Float, world : World, playerPos : Orientation2D) {
 		attackTimer -= dtime
 		if (attackTimer < 0) {
-			shootProjectiles(projectileList, playerPos)
+			shootProjectiles(world.projectiles, playerPos)
 		}
 	}
 
