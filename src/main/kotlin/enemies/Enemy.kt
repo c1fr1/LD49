@@ -1,3 +1,7 @@
+package enemies
+
+import Projectile
+import World
 import engine.entities.Camera2D
 import engine.entities.Orientation2D
 import engine.openal.Sound

@@ -43,7 +43,7 @@ class Main(w : EnigWindow) : EnigView() {
 		texShader = ShaderProgram("textureShader")
 		textShader = ShaderProgram("textShader")
 
-		font = Font(Paths.get({}.javaClass.classLoader.getResource("Inkfree.ttf")!!.toURI()), 64f, 1024, 500)
+		font = Font(Paths.get({}.javaClass.classLoader.getResource("Inkfree.ttf")!!.toURI()), 128f, 1024, 512)
 		world.generateResources()
 		player.generateResources()
 	}

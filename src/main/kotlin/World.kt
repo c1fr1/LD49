@@ -1,3 +1,6 @@
+import enemies.Enemy
+import enemies.HydrantEnemy
+import enemies.LinearEnemy
 import engine.entities.Camera2D
 import engine.opengl.Texture
 import engine.opengl.bufferObjects.VAO

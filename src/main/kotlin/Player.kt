@@ -1,3 +1,4 @@
+import enemies.Enemy
 import engine.PIf
 import engine.entities.Camera2D
 import engine.entities.Orientation2D
@@ -20,7 +21,6 @@ import org.joml.Matrix4f
 import org.joml.Vector2f
 import org.joml.Vector3f
 import org.lwjgl.glfw.GLFW.*
-import org.lwjgl.system.windows.MOUSEINPUT
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.min

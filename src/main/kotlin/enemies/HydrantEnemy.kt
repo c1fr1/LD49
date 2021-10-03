@@ -1,3 +1,9 @@
+package enemies
+
+import Player
+import Projectile
+import ProjectileType
+import World
 import engine.PIf
 import engine.entities.Orientation2D
 import org.joml.Math.abs

@@ -1,3 +1,8 @@
+package enemies
+
+import Player
+import Projectile
+import ProjectileType
 import engine.PIf
 import engine.entities.Orientation2D
 import engine.opengl.jomlExtensions.minus
