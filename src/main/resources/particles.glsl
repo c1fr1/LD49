@@ -21,7 +21,7 @@ void main() {
 		vel[pID] = vec2(noiseX, noiseY) * 10 + playerVel / (3 * dtime);
 		size[pID] = mod(mod(time, 1) * (473 + pID), 1);
 	}
-	vel[pID] += 30 * vec2(noiseX, noiseY) * dtime;
+	vel[pID] += 100 * vec2(noiseX, noiseY) * dtime;
 	pos[pID] += vel[pID] * dtime;
 	size[pID] -= dtime;
 }

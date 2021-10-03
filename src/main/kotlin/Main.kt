@@ -40,7 +40,7 @@ class Main(w : EnigWindow) : EnigView() {
 		squareVAO = VAO(-1f, -1f, 2f, 2f)
 		hpShader = ShaderProgram("hpShader")
 		texShader = ShaderProgram("textureShader")
-
+		textShader = ShaderProgram("textShader")
 
 		font = Font(Paths.get({}.javaClass.classLoader.getResource("Inkfree.ttf")!!.toURI()), 64f, 1024, 500)
 		world.generateResources()
@@ -57,20 +57,31 @@ class Main(w : EnigWindow) : EnigView() {
 		world.render(player, squareVAO, texShader)
 		player.render(squareVAO, texShader)
 		renderHPBar()
+		renderScore()
 
 		return input.keys[GLFW_KEY_ESCAPE] == KeyState.Pressed
 	}
 
 	fun renderScore() {
+		textShader.enable()
 		world.tileVAO.prepareRender()
 
-		lateinit var texMat : Array<Matrix4f>
-		lateinit var worldMat : Array<Matrix4f>
-		val mats = font.getMats("", player.getMatrix()) {
-			worldMat = worldMats
+		lateinit var texMats : Array<Matrix4f>
+		lateinit var worldMats : Array<Matrix4f>
+		font.getMats("HELLO WORLD", player.getMatrix().scale(10f)) {wm, tm ->
+			worldMats = wm
+			texMats = tm
 		}
-
-
+		font.bind()
+		checkGLError()
+		for (i in texMats.indices) {
+			textShader[ShaderType.VERTEX_SHADER, 0] = worldMats[i]
+			textShader[ShaderType.VERTEX_SHADER, 1] = texMats[i]
+			checkGLError()
+			world.tileVAO.fullRender()
+			checkGLError()
+		}
+		checkGLError()
 		world.tileVAO.unbind()
 
 	}

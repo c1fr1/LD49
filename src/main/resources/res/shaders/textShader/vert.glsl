@@ -1,5 +1,6 @@
 layout (location = 0) in vec3 vertices;
 layout (location = 1) in vec2 textCoords;
+
 out vec2 texCoords;
 
 uniform mat4 matrix;
