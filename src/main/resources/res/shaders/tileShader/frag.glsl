@@ -8,6 +8,7 @@ uniform float strength;
 uniform vec2 pos;
 uniform float time;
 uniform vec4 neighborStrengths;
+uniform vec4 cornerStrengths;
 
 uniform sampler2D texSampler;
 
@@ -27,26 +28,16 @@ float realStrength() {
 	float rightFactor = clamp(tc.x * 5 - 4, 0, 1) / 2;
 	float upFactor =  clamp((1 - tc.y * 5), 0, 1) / 2;
 	float downFactor = clamp(tc.y * 5 - 4, 0, 1) / 2;
-	if (leftFactor > upFactor) {
-		upFactor = 0;
-	} else {
-		leftFactor = 0;
+
+	float totalSideStrength = leftFactor + rightFactor + upFactor + downFactor;
+	if (totalSideStrength < 0.0001) {
+		return strength;
 	}
-	if (upFactor > rightFactor) {
-		rightFactor = 0;
-	} else {
-		upFactor = 0;
-	}
-	if (rightFactor > downFactor) {
-		downFactor = 0;
-	} else {
-		rightFactor = 0;
-	}
-	if (downFactor > leftFactor) {
-		leftFactor = 0;
-	} else {
-		downFactor = 0;
-	}
+	float maxSideStrength = max(max(leftFactor, rightFactor), max(upFactor, downFactor));
+	leftFactor *= maxSideStrength / totalSideStrength;
+	rightFactor *= maxSideStrength / totalSideStrength;
+	upFactor *= maxSideStrength / totalSideStrength;
+	downFactor *= maxSideStrength / totalSideStrength;
 	float centerFactor = 1 - leftFactor - rightFactor - upFactor - downFactor;
 	return centerFactor * strength +
 		leftFactor * neighborStrengths.x +
@@ -55,7 +46,7 @@ float realStrength() {
 		downFactor * neighborStrengths.w;
 }
 
-float rand(vec2 co){
+float rand(vec2 co) {
 	return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
 }
 

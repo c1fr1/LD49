@@ -76,6 +76,13 @@ class World {
 						if (y - ditchedRows + rowsShownBelowCam + 1 < tiles.size) tiles[y - ditchedRows + rowsShownBelowCam + 1][x] else 1f,
 						prevRow?.get(x) ?: 0f
 					)
+				tileShader[ShaderType.FRAGMENT_SHADER, 4] =
+					Vector4f(
+						if (x > 0) row[x - 1] else -0.5f,
+						if (x + 1 < rowWidth) row[x + 1] else -0.5f,
+						if (y - ditchedRows + rowsShownBelowCam + 1 < tiles.size) tiles[y - ditchedRows + rowsShownBelowCam + 1][x] else 1f,
+						prevRow?.get(x) ?: 0f
+					)
 				tileShader[ShaderType.VERTEX_SHADER, 0] = camera.getMatrix().scale(5f).translate((x - rowWidth / 2).toFloat(), y.toFloat(), 0f)
 				tileVAO.drawTriangles()
 			}
