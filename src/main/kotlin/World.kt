@@ -19,6 +19,10 @@ class World {
 
 	val rowWidth : Int
 
+	var score = 0
+	val scoreMultiplier : Int
+		get() = ditchedRows / rowWidth + 1
+
 	lateinit var tileShader : ShaderProgram
 	lateinit var tileVAO : VAO
 	lateinit var tileTexture : Texture
@@ -110,7 +114,7 @@ class World {
 		for (row in tiles) {
 			for (x in row.indices) {
 				if (row[x] < 0) {
-					row[x] = 0f;
+					row[x] = -0.0001f;
 				} else if (playerPos.x == x && playerPos.y == y) {
 					row[x] -= degradingFactor
 				} else if (row[x] < 0.85 || (playerPos.distance(x, y) > 10f && y < playerPos.y)) {
@@ -129,6 +133,7 @@ class World {
 		while (tiles.first.all { it < 0f }) {
 			tiles.pop()
 			++ditchedRows
+			score += scoreMultiplier
 		}
 
 		while (tiles.size - playerPos.y < requiredRowsAboveCam) addRow(true)
