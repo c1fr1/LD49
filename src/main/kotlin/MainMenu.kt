@@ -41,7 +41,7 @@ class MainMenu(w : EnigWindow) : EnigView() {
 
 		woodTex = Texture("tiles/woodTex.png")
 
-		font = Font(Paths.get({}.javaClass.classLoader.getResource("Inkfree.ttf")!!.toURI()), 128f, 1024, 512)
+		font = Font("Inkfree.ttf", 128f, 1024, 512)
 
 		vao = VAO(0f, 0f, 1f, 1f)
 	}
