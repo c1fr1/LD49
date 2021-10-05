@@ -207,9 +207,9 @@ class Player(w : EnigWindow) : Camera2D(w) {
 
 		sources = Array(10) { SoundSource(0f, 0f, 0f) }
 		fireSource = SoundSource(0f, 0f, 0f)
-		hitSound = Sound("sounds/sizzle0.wav")
-		attackSounds = Array(3) {Sound("sounds/attack$it.wav")}
-		fireSound = Sound("sounds/fire.wav")
+		hitSound = Sound("sounds/sizzle0.ogg")
+		attackSounds = Array(3) {Sound("sounds/attack$it.ogg")}
+		fireSound = Sound("sounds/fire.ogg")
 		fireSource.setVolume(0.5f)
 		fireSource.setLoop()
 		fireSource.playSound(fireSound)

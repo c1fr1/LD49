@@ -36,8 +36,8 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 	fun playSound(sound : Sound, volume : Float = 1f, player : Vector2f = Vector2f(0f, 0f), pitch : Float = 1f) {
 		sources[sourceIndex].stop()
 		sources[sourceIndex].setVolume(volume)
-		sources[sourceIndex].x = 100f
-		sources[sourceIndex].y = y - player.y
+		sources[sourceIndex].x = 0f
+		sources[sourceIndex].y = 0f//y - player.y
 		sources[sourceIndex].setPitch(pitch)
 		sources[sourceIndex].updateSourcePosition()
 		sources[sourceIndex++].playSound(sound)
@@ -78,9 +78,9 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 			sprinklerTex = Texture("sprinkler.png")
 			sprayerTex = Texture("sprayer.png")
 			sources = Array(20) { SoundSource(0f, 0f, 0f) }
-			attackSounds = Array(4) {Sound("sounds/ext$it.wav")}
-			damagedSounds = Array(3) {Sound("sounds/hit$it.wav")}
-			sprinklerSounds = Array(3) {Sound("sounds/sprinkler/sprinkler$it.wav")}
+			attackSounds = Array(4) {Sound("sounds/ext$it.ogg")}
+			damagedSounds = Array(3) {Sound("sounds/hit$it.ogg")}
+			sprinklerSounds = Array(3) {Sound("sounds/sprinkler/sprinkler$it.ogg")}
 		}
 	}
 }
