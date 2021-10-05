@@ -29,9 +29,6 @@ import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 
-
-private const val NUM_PARTICLES = 100
-
 class Player(w : EnigWindow) : Camera2D(w) {
 
 	var hp = 1f
@@ -45,13 +42,6 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	private var left = GLFW_KEY_A
 	private var right = GLFW_KEY_D
 	private var dash = GLFW_KEY_LEFT_SHIFT
-
-	private lateinit var compShader : ComputeProgram
-	private lateinit var shader : ShaderProgram
-	private lateinit var posSSBO : SSBO2f
-	private lateinit var velSSBO : SSBO2f
-	private lateinit var sizeSSBO : SSBO1f
-	private lateinit var colorSSBO : SSBO3f
 
 	private lateinit var sources : Array<SoundSource>
 	private lateinit var hitSound : Sound
@@ -105,7 +95,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 			x += delta.x
 			y += delta.y
 		}
-		generateParticles(dtime, time, delta)
+		ParticleManager.generateParticles(dtime, time, delta, this)
 
 		val recoverySpeed = dtime * 0.25f
 
@@ -145,31 +135,9 @@ class Player(w : EnigWindow) : Camera2D(w) {
 		playSound(attackSounds.random(), 10f)
 	}
 
-	fun generateParticles(dtime : Float, time : Float, speed : Vector2f) {
-		checkGLError()
-		compShader.enable()
-		compShader[0] = this as Vector2f
-		compShader[1] = dtime
-		compShader[2] = time
-		compShader[3] = speed
-		compShader[4] = hp
-		posSSBO.bindToPosition(0)
-		velSSBO.bindToPosition(1)
-		sizeSSBO.bindToPosition(2)
-		checkGLError()
-		compShader.run(NUM_PARTICLES)
-		checkGLError()
-	}
-
 	fun render(vao : VAO, texShader : ShaderProgram) {
-		shader.enable()
-		posSSBO.bindToPosition(0)
-		sizeSSBO.bindToPosition(2)
-		colorSSBO.bindToPosition(3)
-		shader[ShaderType.VERTEX_SHADER, 0] = getMatrix()
+		ParticleManager.render(vao, this)
 		vao.prepareRender()
-		vao.drawTrianglesInstanced(NUM_PARTICLES)
-
 		texShader.enable()
 		for (proj in projectiles) {
 			proj.type.getTexture().bind()
@@ -191,19 +159,7 @@ class Player(w : EnigWindow) : Camera2D(w) {
 	}
 
 	fun generateResources() {
-		compShader = ComputeProgram("particles.glsl")
-		shader = ShaderProgram("particleShader")
-		posSSBO = SSBO2f(FloatArray(2 * NUM_PARTICLES))
-		velSSBO = SSBO2f(FloatArray(2 * NUM_PARTICLES))
-		sizeSSBO = SSBO1f(FloatArray(NUM_PARTICLES) {random().toFloat()})
-
-		fun emberSlide(factor : Float) : Vector3f {
-			return Vector3f(clamp(3f - factor * 3f, 0f, 1f), 1f - factor, 0f)
-		}
-
-		colorSSBO = SSBO3f(Array(NUM_PARTICLES) {
-			emberSlide(random().toFloat())
-		}.toFloatArray())
+		ParticleManager.generateResources()
 
 		sources = Array(10) { SoundSource(0f, 0f, 0f) }
 		fireSource = SoundSource(0f, 0f, 0f)
@@ -235,6 +191,7 @@ class PlayerProjectile(player : Player, input : InputHandler, aspectRatio : Floa
 					world.score += world.enemies[i].bounty * world.scoreMultiplier
 					world.enemies.removeAt(i)
 				}
+				ParticleManager.requestParticles(this, Vector2f(cos(rotation) * speed, sin(rotation) * speed) / 2f)
 				return true
 			}
 		}

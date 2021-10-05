@@ -8,6 +8,7 @@ import engine.TAUf
 import engine.compareAngles
 import engine.entities.Orientation2D
 import engine.opengl.jomlExtensions.minus
+import engine.opengl.jomlExtensions.times
 import engine.printMatrix
 import org.joml.Math.abs
 import org.joml.Math.random
@@ -65,11 +66,12 @@ class SprinklerProjectile(enemy : Vector2f, rotation : Float, val speed : Float 
 	override val type : ProjectileType = ProjectileType.spray
 	override fun updatePosition(dtime : Float, player : Player) : Boolean {
 		val distance = dtime * speed
-		x += cos(rotation) * distance
-		y += sin(rotation) * distance
+		val vel = Vector2f(cos(rotation), sin(rotation))
+		add(vel * distance)
 		if (distance(player) < 2f) {
 			player.hp -= 0.2f
 			player.landHit()
+			ParticleManager.requestParticles(this, vel * speed / 2f)
 			return true
 		}
 		return sourcePos.distance(this) > 50f

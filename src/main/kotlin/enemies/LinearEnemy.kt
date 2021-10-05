@@ -1,11 +1,13 @@
 package enemies
 
+import ParticleManager
 import Player
 import Projectile
 import ProjectileType
 import engine.PIf
 import engine.entities.Orientation2D
 import engine.opengl.jomlExtensions.minus
+import engine.opengl.jomlExtensions.times
 import org.joml.Matrix4f
 import org.joml.Vector2f
 import org.joml.Vector2i
@@ -35,15 +37,16 @@ class LinearProjectile(enemy : Vector2f, rotation : Float, val speed : Float = 4
 	override val type : ProjectileType = ProjectileType.water
 	override fun updatePosition(dtime : Float, player : Player) : Boolean {
 		val distance = dtime * speed
-		x += cos(rotation) * distance
-		y += sin(rotation) * distance
+		val vel = Vector2f(cos(rotation), sin(rotation))
+		add(vel * distance)
 		if (distance(player) < 2f) {
 			player.hp -= 0.5f
 			player.landHit()
+			ParticleManager.requestParticles(this, vel * speed / 2f)
 			return true
 		}
 		return distance(player) > 200f
 	}
 
-	override fun transformMat(cam : Matrix4f) : Matrix4f = cam.translate(x, y, 0f).rotateZ(rotation + PIf / 2)
+	override fun transformMat(cam : Matrix4f) : Matrix4f = cam.translate(x, y, 0f).rotateZ(rotation + PIf / 2).scale(1.5f)
 }

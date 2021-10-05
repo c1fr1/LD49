@@ -5,6 +5,7 @@ import engine.opengl.bufferObjects.FBO
 import engine.opengl.bufferObjects.VAO
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
+import org.joml.Math.random
 import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
 import java.nio.file.Paths
 import kotlin.math.max
@@ -18,13 +19,14 @@ class MainMenu(w : EnigWindow) : EnigView() {
 
 	var cam = Camera2D(w, 2f)
 
-	var time = 0f
+	var time = random().toFloat() * 10000f
 
 	var nextView = 0
 
-	val playButton = Button(0.4f, 2.3f, "PLAY")
-	val tutorialButton = Button(-0.1f, 4.75f, "TUTORIAL")
-	val quitButton = Button(-0.6f, 2.75f, "QUIT")
+	val playButton = Button(0.5f, 2.3f, "PLAY")
+	val tutorialButton = Button(0.1f, 4.75f, "TUTORIAL")
+	val settingsButton = Button(-0.3f, 4.75f, "SETTINGS")
+	val quitButton = Button(-0.7f, 2.75f, "QUIT")
 
 	lateinit var buttonShader : ShaderProgram
 	lateinit var textShader : ShaderProgram
@@ -51,10 +53,12 @@ class MainMenu(w : EnigWindow) : EnigView() {
 
 		playButton.updateStrength(window, dtime)
 		tutorialButton.updateStrength(window, dtime)
+		settingsButton.updateStrength(window, dtime)
 		quitButton.updateStrength(window, dtime)
 
 		renderButton(playButton)
 		renderButton(tutorialButton)
+		renderButton(settingsButton)
 		renderButton(quitButton)
 
 		time += dtime
@@ -66,6 +70,10 @@ class MainMenu(w : EnigWindow) : EnigView() {
 			}
 			if (tutorialButton.hovering(window)) {
 				nextView = 2
+				return true
+			}
+			if (settingsButton.hovering(window)) {
+				nextView = 3
 				return true
 			}
 			if (quitButton.hovering(window)) {

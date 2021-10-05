@@ -68,23 +68,34 @@ class World {
 		tileVAO.prepareRender()
 		tileTexture.bind()
 		var prevRow : Array<Float>? = null
-		var y = ditchedRows - rowsShownBelowCam
-		for (row in tiles) {
-			for (x in row.indices) {
-				tileShader[ShaderType.FRAGMENT_SHADER, 0] = row[x]
-				tileShader[ShaderType.FRAGMENT_SHADER, 1] = Vector2f(x.toFloat(), y.toFloat())
+		var y = ditchedRows - rowsShownBelowCam - 1
+
+		val iter = tiles.iterator()
+
+		val rows : Array<Array<Float>?> = arrayOfNulls(3)
+		rows[2] = if (iter.hasNext()) iter.next() else null
+
+		while (rows[2] != null || rows[1] != null) {
+
+			for (x in -1..rowWidth) {
+				val strs = Matrix3f()
+				for (rx in -1..1) {
+					for (ry in 0..2) {
+						strs[rx + 1, ry] = if (x + rx in 0 until rowWidth)rows[ry]?.get(x + rx) ?: 0f else 0f
+					}
+				}
+
+				tileShader[ShaderType.FRAGMENT_SHADER, 0] = strs
+				tileShader[ShaderType.FRAGMENT_SHADER, 1] = Vector2f(x.toFloat() - (rowWidth / 2), y.toFloat() + 1f)
 				tileShader[ShaderType.FRAGMENT_SHADER, 2] = time
-				tileShader[ShaderType.FRAGMENT_SHADER, 3] =
-					Vector4f(
-						if (x > 0) row[x - 1] else -0.5f,
-						if (x + 1 < rowWidth) row[x + 1] else -0.5f,
-						if (y - ditchedRows + rowsShownBelowCam + 1 < tiles.size) tiles[y - ditchedRows + rowsShownBelowCam + 1][x] else 1f,
-						prevRow?.get(x) ?: 0f
-					)
+				tileShader[ShaderType.FRAGMENT_SHADER, 3] = ParticleManager.nonPlayerRandParticleId()
 				tileShader[ShaderType.VERTEX_SHADER, 0] = camera.getMatrix().scale(5f).translate((x - rowWidth / 2).toFloat(), y.toFloat(), 0f)
 				tileVAO.drawTriangles()
 			}
-			prevRow = row
+
+			rows[0] = rows[1]
+			rows[1] = rows[2]
+			rows[2] = if (iter.hasNext()) iter.next() else null
 			++y
 		}
 		tileVAO.unbind()
@@ -181,8 +192,7 @@ class World {
 				currentPhase = Phase.randomType()
 				rowsInSection = currentPhase.getLength()
 				currentPhase.getEnemies(1f + scoreMultiplier / 100f, this) {enemies.add(it)}
-				enemies.add(HydrantEnemy(getWorldPositionX(0), getWorldPositionY(tiles.size)))
-				enemies.add(HydrantEnemy(getWorldPositionX(rowWidth - 1), getWorldPositionY(tiles.size)))
+				enemies.add(HydrantEnemy(getWorldPositionX(rowWidth / 2) - 2.5f, getWorldPositionY(tiles.size)))
 			}
 		}
 	}

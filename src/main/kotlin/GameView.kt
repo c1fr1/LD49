@@ -6,8 +6,6 @@ import engine.opengl.shaders.ShaderType
 import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
-import org.w3c.dom.Text
-import java.nio.file.Paths
 
 class GameView(w : EnigWindow) : EnigView() {
 
@@ -112,9 +110,12 @@ class GameView(w : EnigWindow) : EnigView() {
 			renderCenteredText("Game Over", 20f)
 			renderCenteredText("Final Score Is ${world.score}", 0f)
 			renderCenteredText("press ESC to return to the main menu", -20f)
-			if (world.score >= HighScoreManager.highScore && tutorialManager.step < 0) {
+			if (world.score >= PersistentSettings.highScore && tutorialManager.step < 0) {
 				renderCenteredText("HIGH SCORE!", 40f)
-				HighScoreManager.highScore = world.score
+				if (world.score > PersistentSettings.highScore) {
+					PersistentSettings.highScore = world.score
+					PersistentSettings.save()
+				}
 			}
 		}
 	}

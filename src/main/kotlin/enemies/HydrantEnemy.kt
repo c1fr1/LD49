@@ -28,21 +28,17 @@ class HydrantEnemy(x : Float, y : Float) : Enemy(x, y) {
 	}
 
 	override fun shootProjectiles(projectileList : ArrayList<Projectile>, playerPos : Orientation2D) {
-		attackTimer = 0.1f
-		val dir = if (x > 0) {
-			-50f
-		} else {
-			50f
-		}
-		projectileList.add(HydrantProjectile(dir, abs(x), this))
+		attackTimer = 0.075f
+		projectileList.add(HydrantProjectile(75f, 50f, this))
+		projectileList.add(HydrantProjectile(-75f, 50f, this))
 	}
 
-	override fun protectsTile(worldPos : Vector2i, tx : Int, ty : Int) = ty >= worldPos.y - 1
+	override fun protectsTile(worldPos : Vector2i, tx : Int, ty : Int) = ty >= worldPos.y
 }
 
 class HydrantProjectile(val vel : Float, val max : Float, enemy : Vector2f) : Projectile, Vector2f(enemy) {
-	override val type : ProjectileType = ProjectileType.water
-	override fun updatePosition(dtime : Float, player : Player): Boolean {
+	override val type : ProjectileType = ProjectileType.spray
+	override fun updatePosition(dtime : Float, player : Player) : Boolean {
 		x += vel * dtime
 		if (player.y > y && abs(player.x - x) < 5f) {
 			player.hp = -1f
@@ -52,6 +48,6 @@ class HydrantProjectile(val vel : Float, val max : Float, enemy : Vector2f) : Pr
 		return abs(x) > max
 	}
 
-	override fun transformMat(cam: Matrix4f) : Matrix4f = cam.translate(x, y, 0f).rotateZ( PIf / 2 * sign(vel))
+	override fun transformMat(cam: Matrix4f) : Matrix4f = cam.translate(x, y, 0f).rotateZ( PIf / 2 * sign(vel)).scale(1f, 2f, 1f)
 
 }
