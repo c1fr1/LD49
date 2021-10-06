@@ -1,20 +1,24 @@
 import java.io.*
 
 object PersistentSettings {
-	var highScore = 0
-	var playerColor = PlayerColor.dark
+
+	var highScore : Int = 0
+	var playerColor : PlayerColor = PlayerColor.default
 	fun load() {
 		try {
-			val settingsFile = BufferedReader(FileReader("FuseSettings.txt"))
+			val settingsFile = BufferedReader(FileReader("./FuseSettings.txt"))
 			highScore = settingsFile.readLine().toIntOrNull() ?: 0
-			playerColor = PlayerColor.values().firstOrNull { it.ordinal == (settingsFile.readLine().toIntOrNull() ?: 0) } ?: PlayerColor.default
+			val ordinal = settingsFile.readLine()?.toIntOrNull() ?: 0
+			val values = PlayerColor.values()
+			playerColor = if (ordinal in values.indices) values[ordinal] else PlayerColor.default
 			settingsFile.close()
 		} catch (e : FileNotFoundException) {}
 	}
 
 	fun save() {
-		val writer = BufferedWriter(FileWriter("FuseSettings.txt"))
+		val writer = FileWriter("./FuseSettings.txt")
 		writer.write("$highScore\n${playerColor.ordinal}\n")
+		writer.close()
 	}
 }
 

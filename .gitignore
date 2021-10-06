@@ -44,3 +44,5 @@ out/
 # Blender
 # model cache of some sort?
 *.blend1
+
+FuseSettings.txt

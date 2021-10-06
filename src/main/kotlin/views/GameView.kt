@@ -1,3 +1,9 @@
+package views
+
+import PersistentSettings
+import Player
+import TutorialManager
+import World
 import engine.EnigView
 import engine.opengl.*
 import engine.opengl.bufferObjects.*
@@ -27,6 +33,8 @@ class GameView(w : EnigWindow) : EnigView() {
 
 	override fun generateResources(window: EnigWindow) {
 		super.generateResources(window)
+
+		PersistentSettings.load()
 
 		squareVAO = VAO(-1f, -1f, 2f, 2f)
 		hpShader = ShaderProgram("hpShader")

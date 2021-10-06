@@ -1,32 +1,25 @@
+package views
+
 import engine.EnigView
 import engine.entities.Camera2D
-import engine.opengl.*
-import engine.opengl.bufferObjects.FBO
+import engine.opengl.EnigWindow
+import engine.opengl.Font
+import engine.opengl.Texture
 import engine.opengl.bufferObjects.VAO
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
-import org.joml.Math.random
-import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
-import java.nio.file.Paths
+import org.joml.Math
+import org.joml.Vector3f
 import kotlin.math.max
 import kotlin.math.min
-import org.joml.Vector3f
-import org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT
 
-class MainMenu(w : EnigWindow) : EnigView() {
+abstract class MenuView(w : EnigWindow) : EnigView() {
 
 	val window = w
 
 	var cam = Camera2D(w, 2f)
 
-	var time = random().toFloat() * 10000f
-
-	var nextView = 0
-
-	val playButton = Button(0.5f, 2.3f, "PLAY")
-	val tutorialButton = Button(0.1f, 4.75f, "TUTORIAL")
-	val settingsButton = Button(-0.3f, 4.75f, "SETTINGS")
-	val quitButton = Button(-0.7f, 2.75f, "QUIT")
+	var time = Math.random().toFloat() * 10000f
 
 	lateinit var buttonShader : ShaderProgram
 	lateinit var textShader : ShaderProgram
@@ -48,45 +41,8 @@ class MainMenu(w : EnigWindow) : EnigView() {
 		vao = VAO(0f, 0f, 1f, 1f)
 	}
 
-	override fun loop(frameBirth: Long, dtime: Float): Boolean {
-		FBO.prepareDefaultRender()
-
-		playButton.updateStrength(window, dtime)
-		tutorialButton.updateStrength(window, dtime)
-		settingsButton.updateStrength(window, dtime)
-		quitButton.updateStrength(window, dtime)
-
-		renderButton(playButton)
-		renderButton(tutorialButton)
-		renderButton(settingsButton)
-		renderButton(quitButton)
-
-		time += dtime
-
-		if (window.inputHandler.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == KeyState.Released) {
-			if (playButton.hovering(window)) {
-				nextView = 1
-				return true
-			}
-			if (tutorialButton.hovering(window)) {
-				nextView = 2
-				return true
-			}
-			if (settingsButton.hovering(window)) {
-				nextView = 3
-				return true
-			}
-			if (quitButton.hovering(window)) {
-				nextView = -1
-				return true
-			}
-		}
-		nextView = -1
-
-		return window.inputHandler.keys[GLFW_KEY_ESCAPE] == KeyState.Released
-	}
-
-	fun renderButton(button : Button) {
+	fun renderButton(button : Button, dtime : Float) {
+		button.updateStrength(window, dtime)
 		renderButtonBackground(button)
 		renderButtonText(button)
 	}
@@ -122,7 +78,7 @@ class MainMenu(w : EnigWindow) : EnigView() {
 	}
 }
 
-class Button(val y : Float, val width : Float, val text : String) {
+class Button(val y : Float, val width : Float, var text : String) {
 	var strength = 0.93f
 
 	fun updateStrength(window : EnigWindow, dtime : Float) {

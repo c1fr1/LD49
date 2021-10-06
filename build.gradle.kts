@@ -29,7 +29,7 @@ dependencies {
 }
 
 group = "c1fr1"
-version = "1.0"
+version = "1.1"
 
 repositories {
     mavenCentral()

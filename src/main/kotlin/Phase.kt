@@ -18,19 +18,20 @@ enum class Phase(val numExts : Int, val sprinklers : Int, sprayers : Int, val av
 	}
 
 	fun getEnemies(difficulty : Float, world : World, addFunction : (Enemy) -> Unit) {
+		println(difficulty)
 		for (x in 0 until ((numExts + random()) * difficulty).toInt()) {
 			val x = world.getWorldPositionX((random() * world.rowWidth).toInt())
-			val y = world.getWorldPositionY((random() * world.rowsInSection).toInt() + world.tiles.size)
+			val y = world.getWorldPositionY((random() * (world.rowsInSection - 1)).toInt() + world.tiles.size + 1)
 			addFunction(LinearEnemy(x, y))
 		}
 		for (x in 0 until ((sprinklers + random() / 2f) * difficulty).toInt()) {
 			val x = world.getWorldPositionX((random() * world.rowWidth).toInt())
-			val y = world.getWorldPositionY((random() * world.rowsInSection).toInt() + world.tiles.size)
+			val y = world.getWorldPositionY((random() * (world.rowsInSection - 1)).toInt() + world.tiles.size + 1)
 			addFunction(Sprinkler(x, y))
 		}
 		for (x in 0 until ((sprinklers + random() / 2f) * difficulty).toInt()) {
 			val x = world.getWorldPositionX((random() * world.rowWidth).toInt())
-			val y = world.getWorldPositionY((random() * world.rowsInSection).toInt() + world.tiles.size)
+			val y = world.getWorldPositionY((random() * (world.rowsInSection - 1)).toInt() + world.tiles.size + 1)
 			addFunction(Sprayer(x, y))
 		}
 	}

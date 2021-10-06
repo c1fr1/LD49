@@ -191,7 +191,7 @@ class World {
 			if (rowsInSection <= 0) {
 				currentPhase = Phase.randomType()
 				rowsInSection = currentPhase.getLength()
-				currentPhase.getEnemies(1f + scoreMultiplier / 100f, this) {enemies.add(it)}
+				currentPhase.getEnemies(1f + scoreMultiplier / 10f, this) {enemies.add(it)}
 				enemies.add(HydrantEnemy(getWorldPositionX(rowWidth / 2) - 2.5f, getWorldPositionY(tiles.size)))
 			}
 		}

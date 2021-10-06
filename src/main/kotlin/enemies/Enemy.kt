@@ -36,8 +36,8 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 	fun playSound(sound : Sound, volume : Float = 1f, player : Vector2f = Vector2f(0f, 0f), pitch : Float = 1f) {
 		sources[sourceIndex].stop()
 		sources[sourceIndex].setVolume(volume)
-		sources[sourceIndex].x = 0f
-		sources[sourceIndex].y = 0f//y - player.y
+		sources[sourceIndex].x = (x - player.x) / 50f
+		sources[sourceIndex].z = (y - player.y) / 50f
 		sources[sourceIndex].setPitch(pitch)
 		sources[sourceIndex].updateSourcePosition()
 		sources[sourceIndex++].playSound(sound)
@@ -47,6 +47,7 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 	companion object {
 		lateinit var extinguisherTex : Texture
 		lateinit var hydrantTex : Texture
+		lateinit var invincibleHydrantTex : Texture
 		lateinit var sprinklerTex : Texture
 		lateinit var sprayerTex : Texture
 		lateinit var sources : Array<SoundSource>
@@ -61,7 +62,14 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 			square.prepareRender()
 			for (enemy in enemies) {
 				when (enemy) {
-					is HydrantEnemy -> hydrantTex.bind()
+					is HydrantEnemy -> {
+						if (enemies.any { it.y < enemy.y }) {
+							invincibleHydrantTex.bind()
+						} else {
+
+							hydrantTex.bind()
+						}
+					}
 					is LinearEnemy -> extinguisherTex.bind()
 					is Sprinkler -> sprinklerTex.bind()
 					is Sprayer -> sprayerTex.bind()
@@ -75,6 +83,7 @@ sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
 		fun generateResources() {
 			extinguisherTex = Texture("fire extinguisher.png")
 			hydrantTex = Texture("fire hydrant.png")
+			invincibleHydrantTex = Texture("invincible fire hydrant.png")
 			sprinklerTex = Texture("sprinkler.png")
 			sprayerTex = Texture("sprayer.png")
 			sources = Array(20) { SoundSource(0f, 0f, 0f) }
