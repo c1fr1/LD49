@@ -5,11 +5,9 @@ import Projectile
 import ProjectileType
 import engine.PIf
 import engine.TAUf
-import engine.compareAngles
 import engine.entities.Orientation2D
 import engine.opengl.jomlExtensions.minus
 import engine.opengl.jomlExtensions.times
-import engine.printMatrix
 import org.joml.Math.abs
 import org.joml.Math.random
 import org.joml.Matrix4f
@@ -19,7 +17,7 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
-class Sprinkler(x : Float, y : Float) : Enemy(x, y) {
+class Sprinkler(x : Float, y : Float) : Enemy(x, y, -PIf / 2) {
 	override val bounty : Int = 40
 
 	var rotatingPos = random() > 0.5

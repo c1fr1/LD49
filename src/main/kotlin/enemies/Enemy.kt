@@ -14,7 +14,7 @@ import engine.opengl.shaders.ShaderType
 import org.joml.Vector2f
 import org.joml.Vector2i
 
-sealed class Enemy(x : Float, y : Float) : Orientation2D(0f, Vector2f(x, y)) {
+sealed class Enemy(x : Float, y : Float, rotation : Float = 0f) : Orientation2D(rotation, Vector2f(x, y)) {
 
 	open var attackTimer = 2f
 
