@@ -18,7 +18,6 @@ enum class Phase(val numExts : Int, val sprinklers : Int, sprayers : Int, val av
 	}
 
 	fun getEnemies(difficulty : Float, world : World, addFunction : (Enemy) -> Unit) {
-		println(difficulty)
 		for (x in 0 until ((numExts + random()) * difficulty).toInt()) {
 			val x = world.getWorldPositionX((random() * world.rowWidth).toInt())
 			val y = world.getWorldPositionY((random() * (world.rowsInSection - 1)).toInt() + world.tiles.size + 1)

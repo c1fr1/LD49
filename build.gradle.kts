@@ -7,9 +7,14 @@ plugins {
     application
 }
 
+val osString = "windows"
+//val osString = "linux"
+//val osString = "linux-arm32"
+//val osString = "linux-arm64"
+
 val lwjglVersion = "3.2.3"
 val jomlVersion = "1.10.1"
-val lwjglNatives = "natives-windows"
+val lwjglNatives = "natives-${osString}"
 
 dependencies {
     implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
@@ -44,6 +49,7 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>() {
     manifest {
         attributes(mapOf("Main-Class" to "MainKt"))
     }
+    archiveFileName.set("Fuse-$osString.jar")
 }
 
 
