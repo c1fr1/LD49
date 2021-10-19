@@ -11,12 +11,13 @@ import engine.opengl.Texture
 import engine.opengl.bufferObjects.VAO
 import engine.opengl.shaders.ShaderProgram
 import engine.opengl.shaders.ShaderType
+import org.joml.Math.random
 import org.joml.Vector2f
 import org.joml.Vector2i
 
 sealed class Enemy(x : Float, y : Float, rotation : Float = 0f) : Orientation2D(rotation, Vector2f(x, y)) {
 
-	open var attackTimer = 2f
+	open var attackTimer = 2f * random().toFloat()
 
 	open var hp = 1f
 

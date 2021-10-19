@@ -38,6 +38,7 @@ class HydrantEnemy(x : Float, y : Float) : Enemy(x, y) {
 
 class HydrantProjectile(val vel : Float, val max : Float, enemy : Vector2f) : Projectile, Vector2f(enemy) {
 	override val type : ProjectileType = ProjectileType.spray
+	override var travelDistance : Float = 50f
 	override fun updatePosition(dtime : Float, player : Player) : Boolean {
 		x += vel * dtime
 		if (player.y > y && abs(player.x - x) < 5f) {

@@ -107,8 +107,11 @@ class World {
 	}
 
 	fun updateEnemies(dtime : Float, player : Player) {
+		val hydrantY = enemies.minOfOrNull { if (it is HydrantEnemy) it.y else Float.MAX_VALUE} ?: Float.MAX_VALUE
 		for (enemy in enemies) {
-			enemy.update(dtime, this, player)
+			if (enemy.y <= hydrantY) {
+				enemy.update(dtime, this, player)
+			}
 		}
 	}
 

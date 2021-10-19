@@ -59,6 +59,7 @@ class Sprinkler(x : Float, y : Float) : Enemy(x, y, -PIf / 2) {
 class SprinklerProjectile(enemy : Vector2f, rotation : Float, val speed : Float = 30f) : Projectile, Orientation2D(rotation, enemy) {
 
 	val sourcePos = enemy
+	override var travelDistance : Float = 50f
 
 	constructor(enemy : Orientation2D, speed : Float = 30f) : this(enemy, enemy.rotation, speed)
 	override val type : ProjectileType = ProjectileType.spray
@@ -66,13 +67,14 @@ class SprinklerProjectile(enemy : Vector2f, rotation : Float, val speed : Float 
 		val distance = dtime * speed
 		val vel = Vector2f(cos(rotation), sin(rotation))
 		add(vel * distance)
+		travelDistance -= distance
 		if (distance(player) < 2f) {
 			player.hp -= 0.2f
 			player.landHit()
 			ParticleManager.requestParticles(this, vel * speed / 2f)
 			return true
 		}
-		return sourcePos.distance(this) > 50f
+		return travelDistance < 0f
 	}
 
 	override fun transformMat(cam : Matrix4f) : Matrix4f = cam.translate(x, y, 0f)

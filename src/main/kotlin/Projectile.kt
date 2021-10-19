@@ -4,6 +4,8 @@ import org.joml.Vector2fc
 
 interface Projectile : Vector2fc {
 	val type : ProjectileType
+
+	var travelDistance : Float
 	fun updatePosition(dtime : Float, player : Player) : Boolean
 
 	fun transformMat(cam : Matrix4f) : Matrix4f

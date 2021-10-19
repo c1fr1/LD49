@@ -35,17 +35,19 @@ class LinearEnemy(x : Float, y : Float) : Enemy(x, y) {
 class LinearProjectile(enemy : Vector2f, rotation : Float, val speed : Float = 40f) : Projectile, Orientation2D(rotation, enemy) {
 	constructor(enemy : Orientation2D, speed : Float = 40f) : this(enemy, enemy.rotation, speed)
 	override val type : ProjectileType = ProjectileType.water
+	override var travelDistance : Float = 100f
 	override fun updatePosition(dtime : Float, player : Player) : Boolean {
 		val distance = dtime * speed
 		val vel = Vector2f(cos(rotation), sin(rotation))
 		add(vel * distance)
+		travelDistance -= distance
 		if (distance(player) < 2f) {
 			player.hp -= 0.5f
 			player.landHit()
 			ParticleManager.requestParticles(this, vel * speed / 2f)
 			return true
 		}
-		return distance(player) > 200f
+		return travelDistance < 0
 	}
 
 	override fun transformMat(cam : Matrix4f) : Matrix4f = cam.translate(x, y, 0f).rotateZ(rotation + PIf / 2).scale(1.5f)

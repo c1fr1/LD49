@@ -175,11 +175,14 @@ class Player(w : EnigWindow) : Camera2D(w) {
 class PlayerProjectile(player : Player, input : InputHandler, aspectRatio : Float, val speed : Float = 30f) :
 	Projectile, Orientation2D(atan2(-input.glCursorY, input.glCursorX * aspectRatio), player) {
 	override val type : ProjectileType = ProjectileType.player
+	override var travelDistance : Float = 75f
+
 	override fun updatePosition(dtime : Float, player : Player) : Boolean {
 		val distance = dtime * speed
 		x += cos(rotation) * distance
 		y += sin(rotation) * distance
-		return distance(player) > 200f
+		travelDistance -= distance
+		return travelDistance < 0f
 	}
 
 	fun checkEnemyCollision(world : World) : Boolean {
